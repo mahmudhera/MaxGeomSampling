@@ -1,16 +1,14 @@
-from samplers import FracMinHashSketch
-import mmh3
+from samplers import FracMinHashSketch, MaxGeomSample
+from hashes.hash_utils import get_mmh3_hash
 import random
 import string
-
-def get_mmh3_hash(value: str) -> int:
-    return mmh3.hash64(value, signed=False)[0]
 
 def generate_random_strings(num_strings: int, length: int) -> list:
     alphabet = string.ascii_letters + string.digits
     return [''.join(random.choices(alphabet, k=length)) for _ in range(num_strings)]
 
 if __name__ == "__main__":
+    # FMH sketch with scale 0.1
     scale = 0.1
     max_hash_value = 2**64 - 1
     sketch = FracMinHashSketch(scale, max_hash_value)
@@ -24,3 +22,8 @@ if __name__ == "__main__":
     
     print(f"Scale: {sketch.get_scale()}")
     print(f"Number of hashes in sketch: {len(sketch)}")
+    
+    # MaxGeomSampling with k=100, w=64
+    max_geom_sample = MaxGeomSample(k=100, w=64, seed=42)
+    max_geom_sample.update_many(data)
+    print(f"MaxGeomSampling buckets: {len(max_geom_sample._buckets)}")
