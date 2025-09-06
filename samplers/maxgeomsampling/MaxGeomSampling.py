@@ -47,13 +47,14 @@ class MaxGeomSample:
 
         # S: bucket_index -> { item -> _Entry(hprime, freq) }
         self._buckets: Dict[int, Dict[Any, _Entry]] = {}
+        
         # Min-heaps per bucket for quick eviction: bucket_index -> [(hprime, item), ...]
         self._heaps: Dict[int, List[Tuple[int, Any]]] = {}
 
     # ---------- Public API ----------
 
-    def update(self, z: Any) -> None:
-        """Process a singleop.l stream element."""
+    def add_item(self, z: Any) -> None:
+        """Process a single element."""
         h = get_mmh3_hash(z)
         i = self._zpl_plus_one(h)           # 1..w
         hprime = self._tail_after_leftmost_one(h, i)
@@ -85,10 +86,10 @@ class MaxGeomSample:
             # else: drop z (not among k largest)
         # done
 
-    def update_many(self, stream: Iterable[Any]) -> None:
+    def add_many_items(self, stream: Iterable[Any]) -> None:
         """Process an iterable of elements."""
         for z in stream:
-            self.update(z)
+            self.add_item(z)
 
     def sample(self) -> Dict[int, List[Tuple[Any, int, int]]]:
         """
@@ -158,7 +159,19 @@ class MaxGeomSample:
 
     def __len__(self) -> int:
         """Total number of stored items across all buckets."""
-        return sum(len(b) for b in self._buckets.values())
+        return sum(len(bucket) for bucket in self._buckets.values())
 
     def __repr__(self) -> str:
-        return f"MaxGeomSample(k={self.k}, w={self.w}, buckets={len(self._buckets)})"
+        repr_str = f"MaxGeomSample(k={self.k}, w={self.w}, buckets={len(self._buckets)})"
+        return repr_str
+    
+    # check if empty
+    def is_empty(self) -> bool:
+        return len(self) == 0
+    
+    # check if two samples are equal
+    def __eq__(self, other: MaxGeomSample) -> bool:
+        if not isinstance(other, MaxGeomSample):
+            return False
+        return self.k == other.k and self.w == other.w and self.sample() == other.sample()
+    

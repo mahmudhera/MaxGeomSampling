@@ -1,16 +1,22 @@
-
+from hashes.hash_utils import get_mmh3_hash
+from typing import Iterable
 
 class FracMinHashSketch:
     
-    def __init__(self, scale: float, max_hash_value: int):
+    def __init__(self, scale: float):
         self.scale = scale
-        self.max_hash_value = max_hash_value
-        self.threshold = int(scale * max_hash_value)
+        self.max_hash_value = 2**64 - 1
+        self.threshold = int(scale * self.max_hash_value)
         self.hashes = set()
         
-    def add_hash(self, hash_value: int):
+    def add_item(self, item: str):
+        hash_value = get_mmh3_hash(item)
         if hash_value <= self.threshold:
             self.hashes.add(hash_value)
+            
+    def add_many_items(self, items: Iterable[str]):
+        for item in items:
+            self.add_item(item)
             
     def get_hashes(self):
         return self.hashes
