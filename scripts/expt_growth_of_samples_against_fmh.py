@@ -20,7 +20,6 @@ if __name__ == "__main__":
     data_size_to_stddev_maxgeom_sample_size = {}
     
     for data_size in data_sizes:
-        print(f"\nData size: {data_size}")
         data = generate_random_strings(data_size, 10)
         
         # FMH sketch with scale 0.01
@@ -45,7 +44,7 @@ if __name__ == "__main__":
         data_size_to_avg_maxgeom_sample_size[data_size] = avg_maxgeom_sample_size
         data_size_to_stddev_maxgeom_sample_size[data_size] = stddev_maxgeom_sample_size
         
-    print("\nData Size\tAvg FMH Sketch Size\tStddev FMH Sketch Size\tAvg MaxGeom Sample Size\tStddev MaxGeom Sample Size")
+    print("set_size\tfmh_sketch_size_avg\tfmh_sketch_size_stddev\tmaxgeom_sample_size_avg\tmaxgeom_sample_size_stddev")
     for data_size in data_sizes:
         print(f"{data_size}\t{data_size_to_avg_fmh_sketch_size[data_size]:.2f}\t{data_size_to_stddev_fmh_sketch_size[data_size]:.2f}\t{data_size_to_avg_maxgeom_sample_size[data_size]:.2f}\t{data_size_to_stddev_maxgeom_sample_size[data_size]:.2f}")
         
