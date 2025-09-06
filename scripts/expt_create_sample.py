@@ -2,10 +2,8 @@ from samplers import FracMinHashSketch, MaxGeomSample
 from hashes.hash_utils import get_mmh3_hash
 import random
 import string
+from helpers.string_utils import generate_random_strings
 
-def generate_random_strings(num_strings: int, length: int) -> list:
-    alphabet = string.ascii_letters + string.digits
-    return [''.join(random.choices(alphabet, k=length)) for _ in range(num_strings)]
 
 if __name__ == "__main__":
     # FMH sketch with scale 0.1
@@ -30,12 +28,6 @@ if __name__ == "__main__":
     another_sample = MaxGeomSample(k=100, w=64, seed=42)
     another_sample.add_many_items(data)
     print(f"Samples equal: {max_geom_sample == another_sample}")
-    
-    # create another sample after shuffling the data
-    random.shuffle(data)
-    shuffled_sample = MaxGeomSample(k=100, w=64, seed=42)
-    shuffled_sample.add_many_items(data)
-    print(f"Samples equal after shuffling: {max_geom_sample == shuffled_sample}")
     
     # randomly shuffle data 10 times and check equality
     all_equal = True
