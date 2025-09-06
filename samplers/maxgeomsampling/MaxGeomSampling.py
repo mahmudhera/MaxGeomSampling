@@ -55,7 +55,7 @@ class MaxGeomSample:
 
     def add_item(self, z: Any) -> None:
         """Process a single element."""
-        h = get_mmh3_hash(z)
+        h = get_mmh3_hash(z, seed=self.seed)
         i = self._zpl_plus_one(h)           # 1..w
         hprime = self._tail_after_leftmost_one(h, i)
 

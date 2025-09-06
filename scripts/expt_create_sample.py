@@ -1,7 +1,5 @@
 from samplers import FracMinHashSketch, MaxGeomSample
-from hashes.hash_utils import get_mmh3_hash
 import random
-import string
 from helpers.string_utils import generate_random_strings
 
 
