@@ -12,3 +12,6 @@ python scripts/expt_growth_of_samples_against_fmh.py > results/results_growth_of
 
 # growth against k
 python scripts/expt_growth_of_mgs_varying_k.py > results/results_growth_of_mgs_varying_k
+
+# plot basic MGS results
+python scripts/plot_sample_sizes.py
