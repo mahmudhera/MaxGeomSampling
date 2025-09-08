@@ -1,4 +1,4 @@
-set_size  fmh_sketch_size_avg fmh_sketch_size_stddev  maxgeom_sample_size_avg maxgeom_sample_size_stddev
+set_size	fmh_sketch_size_avg	fmh_sketch_size_stddev	maxgeom_sample_size_avg	maxgeom_sample_size_stddev
 10000	102.55	12.13	759.05	14.22
 20000	203.30	15.95	856.50	12.72
 30000	303.20	17.08	916.50	11.99
