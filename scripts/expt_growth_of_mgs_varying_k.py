@@ -14,7 +14,7 @@ if __name__ == "__main__":
     k_values = [25, 50, 100, 200, 400, 800]
 
     # generate data sizes
-    data_sizes = [i for i in range(10000, 10001, 10000)]
+    data_sizes = [i for i in range(10000, 1000001, 10000)]
 
     # vary size of data from 10K to 1M in steps of 10K
     data_size_to_avg_maxgeom_sample_size_per_k = {k: {} for k in k_values}
