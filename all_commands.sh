@@ -15,3 +15,7 @@ python scripts/expt_growth_of_mgs_varying_k.py > results/results_growth_of_mgs_v
 
 # plot basic MGS results
 python scripts/plot_sample_sizes.py
+
+# growth of alpha-MGS samples against data size
+python scripts/expt_growth_of_amgs_varying_alpha.py > results/results_growth_of_amgs_varying_alpha
+
