@@ -57,9 +57,9 @@ def plot_growth_against_multiple_k(data_filename, output_filename):
         
     # also plot theoretical line: y = k * long(n/k) for each k
     for k, color in zip(k_values, colors):
-        theoretical_sizes = k * np.log2(df['set_size'] / k)
-        plt.plot(df['set_size'], theoretical_sizes, linestyle='--', color=color, alpha=0.8, label=f'$k \log_2(n/k)$ for k={k}')
-
+        theoretical_sizes = k * np.log2(df['set_size'] / k) + k
+        plt.plot(df['set_size'], theoretical_sizes, linestyle='--', color=color, alpha=0.8, label=f'$k + k \log_2(n/k)$ for k={k}')
+        
     plt.xlabel('Original set size')
     plt.ylabel('MaxGeom Sample size (averaged over 20 runs)')
     plt.title('Growth of MaxGeom Sample Sizes Against Original Set Size for Different k Values')
