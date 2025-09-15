@@ -11,7 +11,7 @@ def plot_growth_against_multiple_alpha(data_filename, output_filename):
     # column names: set_size	amgs_sample_size_avg_alpha_0.25	amgs_sample_size_stddev_alpha_0.25	amgs_sample_size_avg_alpha_0.5	amgs_sample_size_stddev_alpha_0.5	amgs_sample_size_avg_alpha_0.75	amgs_sample_size_stddev_alpha_0.75
     # need to plot sample sizes for different k values against set_size with error bars as shaded region using stddev
 
-    alpha_values = [0.25, 0.5]
+    alpha_values = [0.25, 0.3, 0.4, 0.5]
     colors = sns.color_palette("husl", len(alpha_values))
     for alpha, color in zip(alpha_values, colors):
         avg_col = f'amgs_sample_size_avg_alpha_{alpha}'
@@ -29,7 +29,7 @@ def plot_growth_against_multiple_alpha(data_filename, output_filename):
         
         
     # also plot a line y = n/1000
-    plt.plot(df['set_size'], df['set_size']/1000, linestyle=':', color='black', alpha=0.8, label='$n/1000$')
+    #plt.plot(df['set_size'], df['set_size']/1000, linestyle=':', color='black', alpha=0.8, label='$n/1000$')
 
     plt.xlabel('Original set size')
     plt.ylabel('$α$-MaxGeom Sample size (averaged over 20 runs)')
