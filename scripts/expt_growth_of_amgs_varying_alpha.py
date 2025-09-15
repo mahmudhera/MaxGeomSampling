@@ -11,7 +11,7 @@ if __name__ == "__main__":
     random.seed(42)
     num_runs_each_setting = 20
     w = 64
-    alpha_values = [0.25, 0.5, 0.75]
+    alpha_values = [0.25, 0.3, 0.4, 0.5]
 
     # generate data sizes
     data_sizes = [i for i in range(10000, 1000001, 10000)]
