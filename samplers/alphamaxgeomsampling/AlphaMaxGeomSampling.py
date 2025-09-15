@@ -182,3 +182,43 @@ class AlphaMaxGeomSample:
             return False
         return self.alpha == other.alpha and self.w == other.w and self.sample() == other.sample()
 
+    def jaccard_index(self, other: AlphaMaxGeomSample) -> float:
+        if not isinstance(other, AlphaMaxGeomSample):
+            raise ValueError("Can only compute Jaccard index with another AlphaMaxGeomSample")
+        
+        # Collect all items from both samples
+        self_items = set()
+        for bucket in self._buckets.values():
+            self_items.update(bucket.keys())
+        
+        other_items = set()
+        for bucket in other._buckets.values():
+            other_items.update(bucket.keys())
+        
+        intersection = len(self_items.intersection(other_items))
+        union = len(self_items.union(other_items))
+        
+        if union == 0:
+            return 1.0  # Both are empty
+        
+        return intersection / union
+    
+    def containment_index(self, other: AlphaMaxGeomSample) -> float:
+        if not isinstance(other, AlphaMaxGeomSample):
+            raise ValueError("Can only compute containment index with another AlphaMaxGeomSample")
+        
+        # Collect all items from both samples
+        self_items = set()
+        for bucket in self._buckets.values():
+            self_items.update(bucket.keys())
+        
+        other_items = set()
+        for bucket in other._buckets.values():
+            other_items.update(bucket.keys())
+        
+        intersection = len(self_items.intersection(other_items))
+        
+        if len(self_items) == 0:
+            return 1.0  # self is empty
+        
+        return intersection / len(self_items)

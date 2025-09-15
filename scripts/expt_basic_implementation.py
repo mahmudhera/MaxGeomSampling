@@ -37,3 +37,32 @@ if __name__ == "__main__":
             all_equal = False
             break
     print(f"Samples equal after 10 random shuffles: {all_equal}")
+    
+    # randomly select half of data and create another sample
+    data2 = random.sample(data, len(data) // 2)
+    another_sample = MaxGeomSample(k=100, w=64, seed=42)
+    another_sample.add_many_items(data2)
+    
+    # compute true jaccard index between data sets
+    set1 = set(data)
+    set2 = set(data2)
+    true_jaccard = len(set1.intersection(set2)) / len(set1.union(set2))
+    print(f"True Jaccard index between data sets: {true_jaccard:.4f}")
+    
+    # compute jaccard index using MGS
+    jaccard = max_geom_sample.jaccard_index(another_sample)
+    print(f"Jaccard index between MGS samples: {jaccard:.4f}")
+    
+    # compute jaccard index using FMH
+    fmh_sketch2 = FracMinHashSketch(scale)
+    fmh_sketch2.add_many_items(data2)
+    fmh_jaccard = fmh_sketch.jaccard_index(fmh_sketch2)
+    print(f"Jaccard index between FMH sketches: {fmh_jaccard:.4f}")
+    
+    # compute containment index
+    containment = len(set1.intersection(set2)) / len(set1)
+    print(f"True Containment index between data sets: {containment:.4f}")
+    containment_mgs = max_geom_sample.containment_index(another_sample)
+    print(f"Containment index between MGS samples: {containment_mgs:.4f}")
+    containment_fmh = fmh_sketch.containment_index(fmh_sketch2)
+    print(f"Containment index between FMH sketches: {containment_fmh:.4f}")

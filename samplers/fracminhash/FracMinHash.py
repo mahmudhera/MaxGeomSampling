@@ -33,3 +33,20 @@ class FracMinHashSketch:
     
     def __len__(self):
         return len(self.hashes)
+    
+    def jaccard_index(self, other: 'FracMinHashSketch') -> float:
+        if not isinstance(other, FracMinHashSketch):
+            raise ValueError("Can only compute Jaccard index with another FracMinHashSketch")
+        intersection = len(self.hashes.intersection(other.hashes))
+        union = len(self.hashes.union(other.hashes))
+        if union == 0:
+            return 1.0  # Both are empty
+        return intersection / union
+    
+    def containment_index(self, other: 'FracMinHashSketch') -> float:
+        if not isinstance(other, FracMinHashSketch):
+            raise ValueError("Can only compute containment index with another FracMinHashSketch")
+        intersection = len(self.hashes.intersection(other.hashes))
+        if len(self.hashes) == 0:
+            return 1.0  # self is empty
+        return intersection / len(self.hashes)
