@@ -6,7 +6,7 @@ import numpy as np
 
 def plot_growth_against_multiple_alpha(data_filename, output_filename):
     df = pd.read_csv(data_filename, sep='\t', index_col=False)
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(8, 4))
     
     # column names: set_size	amgs_sample_size_avg_alpha_0.25	amgs_sample_size_stddev_alpha_0.25	amgs_sample_size_avg_alpha_0.5	amgs_sample_size_stddev_alpha_0.5	amgs_sample_size_avg_alpha_0.75	amgs_sample_size_stddev_alpha_0.75
     # need to plot sample sizes for different k values against set_size with error bars as shaded region using stddev
@@ -32,10 +32,10 @@ def plot_growth_against_multiple_alpha(data_filename, output_filename):
     #plt.plot(df['set_size'], df['set_size']/1000, linestyle=':', color='black', alpha=0.8, label='$n/1000$')
 
     plt.xlabel('Original set size')
-    plt.ylabel('$α$-MaxGeom Sample size (averaged over 20 runs)')
-    plt.title('Growth of $α$-MGS Samples Against Set Size for Different $α$ Values')
+    plt.ylabel('$α$-MaxGeomSampling Sample sizes')
+    #plt.title('Growth of $α$-MGS Samples Against Set Size for Different $α$ Values')
     plt.legend()
-    plt.grid(True)
+    plt.grid(True, alpha=0.3)
     plt.savefig(output_filename)
     plt.close()
     

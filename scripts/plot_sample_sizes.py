@@ -6,9 +6,9 @@ import numpy as np
 
 def plot_growth_against_fmh(data_filename, output_filename):
     df = pd.read_csv(data_filename, sep='\t', index_col=False)
-    plt.figure(figsize=(10, 6))
-    
-    # column naes: set_size  fmh_sketch_size_avg fmh_sketch_size_stddev  maxgeom_sample_size_avg maxgeom_sample_size_stddev
+    plt.figure(figsize=(8, 4))
+
+    # column names: set_size  fmh_sketch_size_avg fmh_sketch_size_stddev  maxgeom_sample_size_avg maxgeom_sample_size_stddev
     # need to plot fmh_sketch_size_avg and maxgeom_sample_size_avg against set_size
     
     colors = sns.color_palette("husl", 2)
@@ -38,7 +38,7 @@ def plot_growth_against_fmh(data_filename, output_filename):
     
 def plot_growth_against_multiple_k(data_filename, output_filename):
     df = pd.read_csv(data_filename, sep='\t', index_col=False)
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(8, 4))
     
     # column names: set_size	mgs_sample_size_avg_k_25	mgs_sample_size_stddev_k_25	mgs_sample_size_avg_k_50	mgs_sample_size_stddev_k_50	mgs_sample_size_avg_k_100	mgs_sample_size_stddev_k_100	mgs_sample_size_avg_k_200	mgs_sample_size_stddev_k_200	mgs_sample_size_avg_k_400	mgs_sample_size_stddev_k_400	mgs_sample_size_avg_k_800	mgs_sample_size_stddev_k_800
     # need to plot sample sizes for different k values against set_size with error bars as shaded region using stddev
@@ -61,10 +61,10 @@ def plot_growth_against_multiple_k(data_filename, output_filename):
         plt.plot(df['set_size'], theoretical_sizes, linestyle='--', color=color, alpha=0.8, label=f'$k + k \log_2(n/k)$ for k={k}')
         
     plt.xlabel('Original set size')
-    plt.ylabel('MaxGeom Sample size (averaged over 20 runs)')
-    plt.title('Growth of MaxGeom Sample Sizes Against Original Set Size for Different k Values')
+    plt.ylabel('MaxGeomSampling Sample sizes')
+    #plt.title('Growth of MaxGeom Sample Sizes Against Original Set Size for Different k Values')
     plt.legend()
-    plt.grid(True)
+    plt.grid(True, alpha=0.3)
     plt.savefig(output_filename)
     plt.close()
 
