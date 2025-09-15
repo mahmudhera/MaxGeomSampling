@@ -1,4 +1,4 @@
-from samplers import FracMinHashSketch, MaxGeomSample
+from samplers import FracMinHashSketch, MaxGeomSample, AlphaMaxGeomSample
 from helpers.string_utils import generate_random_strings
 import random
 
@@ -39,9 +39,9 @@ if __name__ == '__main__':
         
         # test alpha-MGS with different alpha values
         for alpha in alpha_values_tested:
-            amgs1 = MaxGeomSample(alpha=alpha, w=64, seed=42)
+            amgs1 = AlphaMaxGeomSample(alpha=alpha, w=64, seed=42)
             amgs1.add_many_items(set1)
-            amgs2 = MaxGeomSample(alpha=alpha, w=64, seed=42)
+            amgs2 = AlphaMaxGeomSample(alpha=alpha, w=64, seed=42)
             amgs2.add_many_items(set2)
             estimated_jaccard = amgs1.jaccard_index(amgs2)
             results['alpha-MGS'].append((alpha, len_set2, true_jaccard, estimated_jaccard))   
