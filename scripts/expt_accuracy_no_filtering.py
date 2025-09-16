@@ -54,7 +54,7 @@ if __name__ == '__main__':
                 results['alpha-MGS'].append((alpha, len_set2, true_jaccard, estimated_jaccard))  
             
     # print results to a file
-    with open('expt_accuracy_results.txt', 'w') as f:
+    with open('results/results_accuracy_of_jaccard_no_filtering', 'w') as f:
         f.write('Method\tParameter\tLen_Set2\tTrue_Jaccard\tEstimated_Jaccard\n')
         for method, records in results.items():
             for record in records:
