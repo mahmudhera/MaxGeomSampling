@@ -5,7 +5,7 @@ from tqdm import tqdm
 
 if __name__ == '__main__':
     # constants
-    num_trails = 1000
+    num_trails = 5000
     num_samples_each_trial = 5
     alpha_values_tested = [0.2, 0.3, 0.4, 0.5]
     k_values_tested = [50, 100, 200, 400]
