@@ -1,11 +1,12 @@
 from samplers import FracMinHashSketch, MaxGeomSample, AlphaMaxGeomSample
 from helpers.string_utils import generate_random_strings
 import random
+from tqdm import tqdm
 
 if __name__ == '__main__':
     # constants
-    num_trails = 10000
-    num_samples_each_trial = 20
+    num_trails = 1000
+    num_samples_each_trial = 5
     alpha_values_tested = [0.2, 0.3, 0.4, 0.5]
     k_values_tested = [50, 100, 200, 400]
     output_file = 'results/results_accuracy_of_jaccard_no_filtering'
@@ -22,7 +23,7 @@ if __name__ == '__main__':
     # for each trial, create another set whose length is random between 1K ans 20K, then compute true jaccard, and estimate jaccard using different MGS and alpha-MGS samples
     # for the results, we have a dictionary with keys as 'MGS' or 'alpha-MGS', and values as (parameter, length of set2, true jaccard, estimated jaccard)
     results = {'MGS': [], 'alpha-MGS': []}
-    for _ in range(num_trails):
+    for _ in tqdm(range(num_trails)):
         # create another set with random length between 1K and 20K
         len_set2 = random.randint(1000, 20000)
         set2 = set(random.sample(universal_set, len_set2))
