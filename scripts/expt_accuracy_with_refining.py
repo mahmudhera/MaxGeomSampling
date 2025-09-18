@@ -9,8 +9,8 @@ if __name__ == '__main__':
     num_samples_each_trial = 2
     alpha_values_tested = [0.2, 0.3, 0.4, 0.5]
     k_values_tested = [50, 100, 200, 400]
-    output_file = 'results/results_accuracy_of_jaccard_no_filtering'
-    
+    output_file = 'results/results_accuracy_of_jaccard_with_refining'
+
     # set random seed for reproducibility
     random.seed(42)
     
@@ -54,7 +54,7 @@ if __name__ == '__main__':
                 results['alpha-MGS'].append((alpha, len_set2, true_jaccard, estimated_jaccard))  
             
     # print results to a file
-    with open('results/results_accuracy_of_jaccard_with_filtering', 'w') as f:
+    with open(output_file, 'w') as f:
         f.write('Method\tParameter\tLen_Set2\tTrue_Jaccard\tEstimated_Jaccard\n')
         for method, records in results.items():
             for record in records:
