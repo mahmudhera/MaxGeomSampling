@@ -180,39 +180,14 @@ class MaxGeomSample:
         if not isinstance(other, MaxGeomSample):
             raise ValueError("Can only compute Jaccard index with another MaxGeomSample")
         
-        self_items = set()
-        for bucket in self._buckets.values():
-            self_items.update(bucket.keys())
-        
-        other_items = set()
-        for bucket in other._buckets.values():
-            other_items.update(bucket.keys())
-        
-        intersection = len(self_items.intersection(other_items))
-        union = len(self_items.union(other_items))
-        
-        if union == 0:
-            return 1.0  # both empty
-        
-        return intersection / union
+        union_size = 0
+        intersection_size = 0
+        for i in range(1, max(self.w, other.w) + 1):
+            self_bucket = set(self._buckets.get(i, {}).keys())
+            other_bucket = set(other._buckets.get(i, {}).keys())
+            union_size += len(self_bucket.union(other_bucket))
+            intersection_size += len(self_bucket.intersection(other_bucket))
+        if union_size == 0:
+            return 1.0  # both are empty
+        return intersection_size / union_size
     
-    
-    def containment_index(self, other: MaxGeomSample) -> float:
-        """Compute containment index of self in other."""
-        if not isinstance(other, MaxGeomSample):
-            raise ValueError("Can only compute containment index with another MaxGeomSample")
-        
-        self_items = set()
-        for bucket in self._buckets.values():
-            self_items.update(bucket.keys())
-        
-        other_items = set()
-        for bucket in other._buckets.values():
-            other_items.update(bucket.keys())
-        
-        intersection = len(self_items.intersection(other_items))
-        
-        if len(self_items) == 0:
-            return 1.0  # self is empty
-        
-        return intersection / len(self_items)

@@ -24,3 +24,9 @@ python scripts/plot_alpha_MGS_sample_sizes.py
 
 # experiment for accuracy of jaccard estimation
 python scripts/expt_accuracy.py
+
+# plot accuracy results
+python scripts/plot_accuracy_jaccard_no_filtering.py
+
+# experiment for accuracy of jaccard estimation with refining
+python scripts/expt_accuracy_with_refining.py
