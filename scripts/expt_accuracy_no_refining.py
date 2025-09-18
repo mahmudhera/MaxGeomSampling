@@ -9,8 +9,8 @@ if __name__ == '__main__':
     num_samples_each_trial = 5
     alpha_values_tested = [0.2, 0.3, 0.4, 0.5]
     k_values_tested = [50, 100, 200, 400]
-    output_file = 'results/results_accuracy_of_jaccard_no_filtering'
-    
+    output_file = 'results/results_accuracy_of_jaccard_no_refining.txt'
+
     # set random seed for reproducibility
     random.seed(42)
     
