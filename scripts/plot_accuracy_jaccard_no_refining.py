@@ -10,6 +10,11 @@ if __name__ == "__main__":
     df = pd.read_csv(results_file, sep='\t', index_col=False)
     # columns: Method, Parameter, Len_Set2. True_Jaccard, Estimated_Jaccard
     
+    # filter some data from the df as follows: keep row 1,2, discard row 3,4,5. Then repeat
+    # this is to reduce the number of points plotted, making the plot less dense and more readable
+    mask = np.arange(len(df)) % 5 < 2
+    df = df[mask]
+    
     # plot true jaccard vs estimated jaccard for each method and parameter
     # method names: MGS, alpha-MGS. each method has four parameters
     methods = ['MGS']
