@@ -30,3 +30,6 @@ python scripts/plot_accuracy_jaccard_no_refining.py
 
 # experiment for accuracy of jaccard estimation with refining
 python scripts/expt_accuracy_with_refining.py
+
+# plot accuracy results with refining
+python scripts/plot_accuracy_jaccard_with_refining.py

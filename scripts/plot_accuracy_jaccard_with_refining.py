@@ -5,8 +5,8 @@ import os
 import numpy as np
 
 if __name__ == "__main__":
-    results_file = os.path.join("results", "results_accuracy_of_jaccard_no_refining")
-    output_file = os.path.join("plots", "accuracy_jaccard_no_refining_MGS.png")
+    results_file = os.path.join("results", "results_accuracy_of_jaccard_with_refining")
+    output_file = os.path.join("plots", "accuracy_jaccard_with_refining_MGS.png")
     df = pd.read_csv(results_file, sep='\t', index_col=False)
     # columns: Method, Parameter, Len_Set2. True_Jaccard, Estimated_Jaccard
     
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     plt.plot([0, max_val], [0, max_val], 'k--', label='True Jaccard', alpha=0.4)
     plt.xlabel('True Jaccard')
     plt.ylabel('Estimated Jaccard')
-    plt.title('Estimated vs. True Jaccard for MaxGeomSampling (No Refining)')
+    plt.title('Estimated vs. True Jaccard for MaxGeomSampling (With Refining)')
     plt.legend()
     plt.grid(True, alpha=0.3)
     # export with high resolution
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     plt.clf()
     
     # new plot
-    output_file = os.path.join("plots", "accuracy_jaccard_no_refining_alpha-MGS.png")
+    output_file = os.path.join("plots", "accuracy_jaccard_with_refining_alpha-MGS.png")
     methods = ['alpha-MGS']
     parameters_alpha_MGS = [0.2, 0.3, 0.4, 0.5]
     colors = sns.color_palette("husl", len(methods) * len(parameters_alpha_MGS))
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     plt.plot([0, max_val], [0, max_val], 'k--', label='True Jaccard', alpha=0.4)
     plt.xlabel('True Jaccard')
     plt.ylabel('Estimated Jaccard')
-    plt.title('Estimated vs. True Jaccard for alpha-MaxGeomSampling (No Refining)')
+    plt.title('Estimated vs. True Jaccard for alpha-MaxGeomSampling (With Refining)')
     plt.legend()
     plt.grid(True, alpha=0.3)
     # export with high resolution
