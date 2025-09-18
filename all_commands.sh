@@ -22,11 +22,11 @@ python scripts/expt_growth_of_amgs_varying_alpha.py > results/results_growth_of_
 # plot alpha-MGS results
 python scripts/plot_alpha_MGS_sample_sizes.py
 
-# experiment for accuracy of jaccard estimation
-python scripts/expt_accuracy.py
+# experiment for accuracy of jaccard estimation without refining
+python scripts/expt_accuracy_no_refining.py
 
 # plot accuracy results
-python scripts/plot_accuracy_jaccard_no_filtering.py
+python scripts/plot_accuracy_jaccard_no_refining.py
 
 # experiment for accuracy of jaccard estimation with refining
 python scripts/expt_accuracy_with_refining.py
