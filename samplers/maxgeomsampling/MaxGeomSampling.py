@@ -175,3 +175,19 @@ class MaxGeomSample:
             return False
         return self.k == other.k and self.w == other.w and self.sample() == other.sample()
     
+    def jaccard_index(self, other: MaxGeomSample) -> float:
+        """Compute Jaccard index between two samples."""
+        if not isinstance(other, MaxGeomSample):
+            raise ValueError("Can only compute Jaccard index with another MaxGeomSample")
+        
+        union_size = 0
+        intersection_size = 0
+        for i in range(1, max(self.w, other.w) + 1):
+            self_bucket = set(self._buckets.get(i, {}).keys())
+            other_bucket = set(other._buckets.get(i, {}).keys())
+            union_size += len(self_bucket.union(other_bucket))
+            intersection_size += len(self_bucket.intersection(other_bucket))
+        if union_size == 0:
+            return 1.0  # both are empty
+        return intersection_size / union_size
+    
