@@ -184,7 +184,7 @@ class AlphaMaxGeomSample:
 
     def jaccard_index(self, other: AlphaMaxGeomSample) -> float:
         """Compute Jaccard index between two samples."""
-        if not isinstance(other, MaxGeomSample):
+        if not isinstance(other, AlphaMaxGeomSample):
             raise ValueError("Can only compute Jaccard index with another MaxGeomSample")
         
         union_size = 0
