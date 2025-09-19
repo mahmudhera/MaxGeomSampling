@@ -182,12 +182,23 @@ class MaxGeomSample:
         
         union_size = 0
         intersection_size = 0
-        for i in range(1, max(self.w, other.w) + 1):
+
+        # go over all buckets
+        for i in range(1, min(self.w, other.w) + 1):
+            # get the buckets
             self_bucket = set(self._buckets.get(i, {}).keys())
             other_bucket = set(other._buckets.get(i, {}).keys())
-            union_size += len(self_bucket.union(other_bucket))
+
+            # if any of the buckets is empty, break
+            if len(self_bucket) == 0 or len(other_bucket) == 0:
+                break
+
+            # compute union and intersection sizes
+            union_size += min(len(self_bucket.union(other_bucket)), self.k, other.k)
             intersection_size += len(self_bucket.intersection(other_bucket))
+
         if union_size == 0:
             return 1.0  # both are empty
+
         return intersection_size / union_size
     
