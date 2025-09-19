@@ -196,8 +196,8 @@ class MaxGeomSample:
             threshold = max(self_smallest_hprime[0], other_smallest_hprime[0])
 
             # filter items by threshold
-            self_bucket = {z for z in self_bucket if self._buckets[i][z].hprime >= threshold}
-            other_bucket = {z for z in other_bucket if other._buckets[i][z].hprime >= threshold}
+            self_bucket = {z for z, ent in self._buckets[i].items() if ent.hprime >= threshold}
+            other_bucket = {z for z, ent in other._buckets[i].items() if ent.hprime >= threshold}
 
             # if any of the buckets is empty, break
             if len(self_bucket) == 0 or len(other_bucket) == 0:
