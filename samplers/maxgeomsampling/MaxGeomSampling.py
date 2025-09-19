@@ -195,10 +195,6 @@ class MaxGeomSample:
             other_smallest_hprime = other._heaps[i][0]
             threshold = max(self_smallest_hprime[0], other_smallest_hprime[0])
 
-            # get the buckets
-            self_bucket = set(self._buckets.get(i, {}).keys())
-            other_bucket = set(other._buckets.get(i, {}).keys())
-
             # filter items by threshold
             self_bucket = {z for z in self_bucket if self._buckets[i][z].hprime >= threshold}
             other_bucket = {z for z in other_bucket if other._buckets[i][z].hprime >= threshold}
