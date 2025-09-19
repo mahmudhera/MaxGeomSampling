@@ -183,25 +183,41 @@ class AlphaMaxGeomSample:
         return self.alpha == other.alpha and self.w == other.w and self.sample() == other.sample()
 
     def jaccard_index(self, other: AlphaMaxGeomSample) -> float:
-        if not isinstance(other, AlphaMaxGeomSample):
-            raise ValueError("Can only compute Jaccard index with another AlphaMaxGeomSample")
+        """Compute Jaccard index between two samples."""
+        if not isinstance(other, MaxGeomSample):
+            raise ValueError("Can only compute Jaccard index with another MaxGeomSample")
         
-        # Collect all items from both samples
-        self_items = set()
-        for bucket in self._buckets.values():
-            self_items.update(bucket.keys())
-        
-        other_items = set()
-        for bucket in other._buckets.values():
-            other_items.update(bucket.keys())
-        
-        intersection = len(self_items.intersection(other_items))
-        union = len(self_items.union(other_items))
-        
-        if union == 0:
-            return 1.0  # Both are empty
-        
-        return intersection / union
+        union_size = 0
+        intersection_size = 0
+
+        # get all i values that are in both buckets
+        self_valid_i = set(self._buckets.keys())
+        other_valid_i = set(other._buckets.keys())
+        common_i = self_valid_i.intersection(other_valid_i)
+
+        # go over all buckets
+        for i in common_i:
+            # get the thresholds: minimum h' in each bucket
+            self_smallest_hprime = self._heaps[i][0]
+            other_smallest_hprime = other._heaps[i][0]
+            threshold = max(self_smallest_hprime[0], other_smallest_hprime[0])
+
+            # filter items by threshold
+            self_bucket = {z for z, ent in self._buckets[i].items() if ent.hprime >= threshold}
+            other_bucket = {z for z, ent in other._buckets[i].items() if ent.hprime >= threshold}
+
+            # if any of the buckets is empty, break
+            if len(self_bucket) == 0 or len(other_bucket) == 0:
+                break
+
+            # compute union and intersection sizes
+            union_size += len(self_bucket.union(other_bucket))
+            intersection_size += len(self_bucket.intersection(other_bucket))
+
+        if union_size == 0:
+            return 1.0  # both are empty
+
+        return intersection_size / union_size
     
     def containment_index(self, other: AlphaMaxGeomSample) -> float:
         if not isinstance(other, AlphaMaxGeomSample):
