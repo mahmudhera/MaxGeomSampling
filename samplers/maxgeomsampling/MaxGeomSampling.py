@@ -208,7 +208,7 @@ class MaxGeomSample:
                 break
 
             # compute union and intersection sizes
-            union_size += min(len(self_bucket.union(other_bucket)))
+            union_size += len(self_bucket.union(other_bucket))
             intersection_size += len(self_bucket.intersection(other_bucket))
 
         if union_size == 0:
