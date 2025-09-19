@@ -183,11 +183,25 @@ class MaxGeomSample:
         union_size = 0
         intersection_size = 0
 
+        # get all i values that are in both buckets
+        self_valid_i = set(self._buckets.keys())
+        other_valid_i = set(other._buckets.keys())
+        common_i = self_valid_i.intersection(other_valid_i)
+
         # go over all buckets
-        for i in range(1, min(self.w, other.w) + 1):
+        for i in common_i:
+            # get the thresholds: minimum h' in each bucket
+            self_smallest_hprime = self._heaps[i][0]
+            other_smallest_hprime = other._heaps[i][0]
+            threshold = max(self_smallest_hprime[0], other_smallest_hprime[0])
+
             # get the buckets
             self_bucket = set(self._buckets.get(i, {}).keys())
             other_bucket = set(other._buckets.get(i, {}).keys())
+
+            # filter items by threshold
+            self_bucket = {z for z in self_bucket if self._buckets[i][z].hprime >= threshold}
+            other_bucket = {z for z in other_bucket if other._buckets[i][z].hprime >= threshold}
 
             # if any of the buckets is empty, break
             if len(self_bucket) == 0 or len(other_bucket) == 0:
