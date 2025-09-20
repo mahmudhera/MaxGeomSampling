@@ -190,22 +190,16 @@ class MaxGeomSample:
 
         # go over all buckets
         for i in common_i:
-            # get the thresholds: minimum h' in each bucket
-            self_smallest_hprime = self._heaps[i][0]
-            other_smallest_hprime = other._heaps[i][0]
-            threshold = max(self_smallest_hprime[0], other_smallest_hprime[0])
-
-            # filter items by threshold
-            self_bucket = {z for z, ent in self._buckets[i].items() if ent.hprime >= threshold}
-            other_bucket = {z for z, ent in other._buckets[i].items() if ent.hprime >= threshold}
-
-            # if any of the buckets is empty, break
-            if len(self_bucket) == 0 or len(other_bucket) == 0:
-                break
+            # get the buckets
+            self_hprimes = {ent.hprime for ent in self._buckets[i].values()}
+            other_hprimes = {ent.hprime for ent in other._buckets[i].values()}
+            union_hprimes = self_hprimes.union(other_hprimes)
+            union_hprimes = heapq.nlargest(self.k, union_hprimes)
+            intersection_hprimes = self_hprimes.intersection(other_hprimes)
 
             # compute union and intersection sizes
-            union_size += len(self_bucket.union(other_bucket))
-            intersection_size += len(self_bucket.intersection(other_bucket))
+            union_size += len(union_hprimes)
+            intersection_size += len(intersection_hprimes)
 
         if union_size == 0:
             return 1.0  # both are empty
