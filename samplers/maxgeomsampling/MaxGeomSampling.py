@@ -196,7 +196,7 @@ class MaxGeomSample:
             union_hprimes = self_hprimes.union(other_hprimes)
             union_hprimes = heapq.nlargest(self.k, union_hprimes)
             intersection_hprimes = self_hprimes.intersection(other_hprimes)
-            intersection_hprimes = union_hprimes.intersection(intersection_hprimes)
+            intersection_hprimes = intersection_hprimes.intersection(set(union_hprimes))
 
             # compute union and intersection sizes
             union_size += len(union_hprimes)
