@@ -1,6 +1,6 @@
 conda create -n maxgeom -y
 conda activate maxgeom
-pip install -r requirements.txt
+pip install --file requirements.txt
 
 export PYTHONPATH=$(pwd):$PYTHONPATH
 
