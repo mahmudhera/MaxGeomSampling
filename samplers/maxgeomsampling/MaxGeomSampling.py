@@ -35,7 +35,7 @@ class MaxGeomSample:
       the current minimum h' in that bucket; then the smallest is evicted.
     """
 
-    def __init__(self, k: int, w: int = 32, seed: int = 42) -> None:
+    def __init__(self, k: int, w: int = 64, seed: int = 42) -> None:
         if not (1 <= w <= 64):
             raise ValueError("w must be in [1, 64]")
         if k <= 0:
@@ -206,4 +206,64 @@ class MaxGeomSample:
             return 1.0  # both are empty
 
         return intersection_size / union_size
+
+
+    def merge_untested(self, other: MaxGeomSample) -> MaxGeomSample:
+        """Merge another MaxGeomSample into this one and return a new MaxGeomSample."""
+        if not isinstance(other, MaxGeomSample):
+            raise ValueError("Can only merge with another MaxGeomSample")
+        if self.k != other.k or self.w != other.w:
+            raise ValueError("Can only merge samples with the same k and w")
+
+        merged = MaxGeomSample(k=self.k, w=self.w, seed=self.seed)
+
+        # Add items from self
+        for i, bucket in self._buckets.items():
+            for z, ent in bucket.items():
+                for _ in range(ent.freq):
+                    merged.add_item(z)
+
+        # Add items from other
+        for i, bucket in other._buckets.items():
+            for z, ent in bucket.items():
+                for _ in range(ent.freq):
+                    merged.add_item(z)
+
+        return merged
+
+    
+    def cosine_similarity_untested(self, other: MaxGeomSample) -> float:
+        """Compute Cosine similarity between two samples."""
+        if not isinstance(other, MaxGeomSample):
+            raise ValueError("Can only compute Cosine similarity with another MaxGeomSample")
+        
+        dot_product = 0
+        self_norm_sq = 0
+        other_norm_sq = 0
+
+        # get all i values that are in both buckets
+        self_valid_i = set(self._buckets.keys())
+        other_valid_i = set(other._buckets.keys())
+        common_i = self_valid_i.intersection(other_valid_i)
+
+        # go over all buckets
+        for i in common_i:
+            # get the buckets
+            self_hprimes = {ent.hprime: ent.freq for ent in self._buckets[i].values()}
+            other_hprimes = {ent.hprime: ent.freq for ent in other._buckets[i].values()}
+            union_hprimes = set(self_hprimes.keys()).union(set(other_hprimes.keys()))
+            union_hprimes = heapq.nlargest(self.k, union_hprimes)
+
+            # compute dot product and norms
+            for hprime in union_hprimes:
+                freq1 = self_hprimes.get(hprime, 0)
+                freq2 = other_hprimes.get(hprime, 0)
+                dot_product += freq1 * freq2
+                self_norm_sq += freq1 * freq1
+                other_norm_sq += freq2 * freq2
+
+        if self_norm_sq == 0 or other_norm_sq == 0:
+            return 0.0  # one is empty
+
+        return dot_product / ((self_norm_sq ** 0.5) * (other_norm_sq ** 0.5))
     
