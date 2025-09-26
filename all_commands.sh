@@ -33,3 +33,9 @@ python scripts/expt_accuracy_with_refining.py
 
 # plot accuracy results with refining
 python scripts/plot_accuracy_jaccard_with_refining.py
+
+# vary jaccard from 0 to 1, see how accuracy changes
+python scripts/expt_vary_jaccard.py
+
+# plot accuracy results by varying jaccard
+python scripts/plot_accuracy_by_varying_jaccard.py
