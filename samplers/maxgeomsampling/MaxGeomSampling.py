@@ -208,7 +208,7 @@ class MaxGeomSample:
         return intersection_size / union_size
 
 
-    def merge_untested(self, other: MaxGeomSample) -> MaxGeomSample:
+    def union(self, other: MaxGeomSample) -> MaxGeomSample:
         """Merge another MaxGeomSample into this one and return a new MaxGeomSample."""
         if not isinstance(other, MaxGeomSample):
             raise ValueError("Can only merge with another MaxGeomSample")
