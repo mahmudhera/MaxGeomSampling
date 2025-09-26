@@ -21,6 +21,12 @@ if __name__ == "__main__":
     print(f"MaxGeomSampling buckets: {len(max_geom_sample._buckets)}")
     # print number of items in all buckets
     print(f"Total items in MaxGeomSampling: {len(max_geom_sample)}")
+
+    # now show the number of items in each bucket
+    bucket_i_values = list(max_geom_sample._buckets.keys())
+    bucket_i_values.sort()
+    for i in bucket_i_values:
+        print(f"Bucket {i}: {len(max_geom_sample._buckets[i])} items")
     
     # check equality
     another_sample = MaxGeomSample(k=100, w=64, seed=42)
@@ -59,10 +65,3 @@ if __name__ == "__main__":
     fmh_jaccard = fmh_sketch.jaccard_index(fmh_sketch2)
     print(f"Jaccard index between FMH sketches: {fmh_jaccard:.4f}")
     
-    # compute containment index
-    containment = len(set1.intersection(set2)) / len(set1)
-    print(f"True Containment index between data sets: {containment:.4f}")
-    containment_mgs = max_geom_sample.containment_index(another_sample)
-    print(f"Containment index between MGS samples: {containment_mgs:.4f}")
-    containment_fmh = fmh_sketch.containment_index(fmh_sketch2)
-    print(f"Containment index between FMH sketches: {containment_fmh:.4f}")

@@ -1,1 +1,6 @@
 mmh3
+matplotlib
+pandas
+numpy
+seaborn
+tqdm
