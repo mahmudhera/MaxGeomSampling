@@ -267,3 +267,7 @@ class AlphaMaxGeomSample:
 
         return dot_product / ((self_norm_sq ** 0.5) * (other_norm_sq ** 0.5))
     
+
+    def sample_size(self) -> int:
+        """Return the total number of items stored in the sample."""
+        return sum(len(bucket) for bucket in self._buckets.values())
