@@ -36,7 +36,7 @@ class AlphaMaxGeomSample:
       the current minimum h' in that bucket; then the smallest is evicted.
     """
 
-    def __init__(self, alpha: float, w: int = 32, seed: int = 42) -> None:
+    def __init__(self, alpha: float, w: int = 64, seed: int = 42) -> None:
         if not (1 <= w <= 64):
             raise ValueError("w must be in [1, 64]")
         if not (0 < alpha < 1):
@@ -97,6 +97,12 @@ class AlphaMaxGeomSample:
         """Process an iterable of elements."""
         for z in stream:
             self.add_item(z)
+
+
+    def update(self, stream: Iterable[Any]) -> None:
+        """Alias for add_many_items."""
+        self.add_many_items(stream)
+
 
     def sample(self) -> Dict[int, List[Tuple[Any, int, int]]]:
         """
@@ -185,7 +191,11 @@ class AlphaMaxGeomSample:
     def jaccard_index(self, other: AlphaMaxGeomSample) -> float:
         """Compute Jaccard index between two samples."""
         if not isinstance(other, AlphaMaxGeomSample):
-            raise ValueError("Can only compute Jaccard index with another MaxGeomSample")
+            raise ValueError("Can only compute Jaccard index with another AlphaMaxGeomSample")
+
+        # if the other's alpha or w differ, cannot compare
+        if self.alpha != other.alpha or self.w != other.w:
+            raise ValueError("Cannot compute Jaccard index between samples with different alpha or w")
         
         union_size = 0
         intersection_size = 0
@@ -197,44 +207,63 @@ class AlphaMaxGeomSample:
 
         # go over all buckets
         for i in common_i:
-            # get the thresholds: minimum h' in each bucket
-            self_smallest_hprime = self._heaps[i][0]
-            other_smallest_hprime = other._heaps[i][0]
-            threshold = max(self_smallest_hprime[0], other_smallest_hprime[0])
+            # compute union and intersection of h' values in bucket i
+            self_hprimes = set(ent.hprime for ent in self._buckets[i].values())
+            other_hprimes = set(ent.hprime for ent in other._buckets[i].values())
+            union_hprimes = self_hprimes.union(other_hprimes)
+            k_for_this_bucket = self._k_sizes[i]
+            union_hprimes = heapq.nlargest(k_for_this_bucket, union_hprimes)
+            intersection_hprimes = self_hprimes.intersection(other_hprimes)
+            intersection_hprimes = intersection_hprimes.intersection(set(union_hprimes))
 
-            # filter items by threshold
-            self_bucket = {z for z, ent in self._buckets[i].items() if ent.hprime >= threshold}
-            other_bucket = {z for z, ent in other._buckets[i].items() if ent.hprime >= threshold}
-
-            # if any of the buckets is empty, break
-            if len(self_bucket) == 0 or len(other_bucket) == 0:
-                break
-
-            # compute union and intersection sizes
-            union_size += len(self_bucket.union(other_bucket))
-            intersection_size += len(self_bucket.intersection(other_bucket))
+            # update union and intersection sizes
+            union_size += len(union_hprimes)
+            intersection_size += len(intersection_hprimes)
 
         if union_size == 0:
             return 1.0  # both are empty
 
         return intersection_size / union_size
+
     
-    def containment_index(self, other: AlphaMaxGeomSample) -> float:
+    def cosine_similarity(self, other: AlphaMaxGeomSample) -> float:
+        """Compute Cosine similarity between two samples."""
         if not isinstance(other, AlphaMaxGeomSample):
-            raise ValueError("Can only compute containment index with another AlphaMaxGeomSample")
+            raise ValueError("Can only compute Cosine similarity with another AlphaMaxGeomSample")
+
+        # if the other's alpha or w differ, cannot compare
+        if self.alpha != other.alpha or self.w != other.w:
+            raise ValueError("Cannot compute Cosine similarity between samples with different alpha or w")
         
-        # Collect all items from both samples
-        self_items = set()
-        for bucket in self._buckets.values():
-            self_items.update(bucket.keys())
-        
-        other_items = set()
-        for bucket in other._buckets.values():
-            other_items.update(bucket.keys())
-        
-        intersection = len(self_items.intersection(other_items))
-        
-        if len(self_items) == 0:
-            return 1.0  # self is empty
-        
-        return intersection / len(self_items)
+        dot_product = 0
+        self_norm_sq = 0
+        other_norm_sq = 0
+
+        # get all i values that are in both buckets
+        self_valid_i = set(self._buckets.keys())
+        other_valid_i = set(other._buckets.keys())
+        common_i = self_valid_i.intersection(other_valid_i)
+
+        # go over all buckets
+        for i in common_i:
+            self_hprime_freq = {ent.hprime: ent.freq for ent in self._buckets[i].values()}
+            other_hprime_freq = {ent.hprime: ent.freq for ent in other._buckets[i].values()}
+            union_hprimes = set(self_hprime_freq.keys()).union(set(other_hprime_freq.keys()))
+            k_for_this_bucket = self._k_sizes[i]
+            union_hprimes = heapq.nlargest(k_for_this_bucket, union_hprimes)
+            intersection_hprimes = set(self_hprime_freq.keys()).intersection(set(other_hprime_freq.keys()))
+            intersection_hprimes = intersection_hprimes.intersection(set(union_hprimes))
+
+            # compute dot product and norms
+            for hprime in union_hprimes:
+                f1 = self_hprime_freq.get(hprime, 0)
+                f2 = other_hprime_freq.get(hprime, 0)
+                self_norm_sq += f1 * f1
+                other_norm_sq += f2 * f2
+                if hprime in intersection_hprimes:
+                    dot_product += f1 * f2
+        if self_norm_sq == 0 or other_norm_sq == 0:
+            return 0.0  # one is empty
+
+        return dot_product / ((self_norm_sq ** 0.5) * (other_norm_sq ** 0.5))
+    
