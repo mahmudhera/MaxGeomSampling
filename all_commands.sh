@@ -69,3 +69,18 @@ python scripts/expt_fixed_similarity_vary_set_size_FMH.py --t 0.2 --metric cosin
 python scripts/expt_fixed_similarity_vary_set_size_FMH.py --t 0.3 --metric cosine --s 0.001 --seeds 200 --growth x2 --seed 42 --out results/expt_fixed_cosine_vary_set_size_cosine_FMH_s0.001_t0.3.tsv
 python scripts/expt_fixed_similarity_vary_set_size_FMH.py --t 0.4 --metric cosine --s 0.001 --seeds 200 --growth x2 --seed 42 --out results/expt_fixed_cosine_vary_set_size_cosine_FMH_s0.001_t0.4.tsv
 python scripts/expt_fixed_similarity_vary_set_size_FMH.py --t 0.5 --metric cosine --s 0.001 --seeds 200 --growth x2 --seed 42 --out results/expt_fixed_cosine_vary_set_size_cosine_FMH_s0.001_t0.5.tsv
+
+# fixed similarity, vary set sizes experiments using alpha-MGS
+# jaccard
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.1 --metric jaccard --alpha 0.1 --seeds 200 --growth x2 --out results/expt_fixed_jaccard_vary_set_size_jaccard_aMGS_alpha0.1_t0.1.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.2 --metric jaccard --alpha 0.1 --seeds 200 --growth x2 --out results/expt_fixed_jaccard_vary_set_size_jaccard_aMGS_alpha0.1_t0.2.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.3 --metric jaccard --alpha 0.1 --seeds 200 --growth x2 --out results/expt_fixed_jaccard_vary_set_size_jaccard_aMGS_alpha0.1_t0.3.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.4 --metric jaccard --alpha 0.1 --seeds 200 --growth x2 --out results/expt_fixed_jaccard_vary_set_size_jaccard_aMGS_alpha0.1_t0.4.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.5 --metric jaccard --alpha 0.1 --seeds 200 --growth x2 --out results/expt_fixed_jaccard_vary_set_size_jaccard_aMGS_alpha0.1_t0.5.tsv
+
+# cosine
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.1 --metric cosine --alpha 0.1 --seeds 500 --growth x2 --out results/expt_fixed_cosine_vary_set_size_cosine_aMGS_alpha0.1_t0.1.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.2 --metric cosine --alpha 0.1 --seeds 500 --growth x2 --out results/expt_fixed_cosine_vary_set_size_cosine_aMGS_alpha0.1_t0.2.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.3 --metric cosine --alpha 0.1 --seeds 500 --growth x2 --out results/expt_fixed_cosine_vary_set_size_cosine_aMGS_alpha0.1_t0.3.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.4 --metric cosine --alpha 0.1 --seeds 500 --growth x2 --out results/expt_fixed_cosine_vary_set_size_cosine_aMGS_alpha0.1_t0.4.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.5 --metric cosine --alpha 0.1 --seeds 500 --growth x2 --out results/expt_fixed_cosine_vary_set_size_cosine_aMGS_alpha0.1_t0.5.tsv
