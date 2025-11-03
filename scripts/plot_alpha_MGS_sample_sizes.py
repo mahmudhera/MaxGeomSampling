@@ -7,10 +7,19 @@ import math
 
 
 def f(alpha):
-    #beta = alpha / (1.0 - alpha)
-    ret_val = (1.0/alpha)*(1.0/math.log(2.0)) + 1.0 - math.log(2.0)
-    #ret_val = 2 + 1.0 / (2**beta - 1)
+    ret_val = 1.0 / alpha
     return ret_val
+
+def C(alpha):
+    numerator = 2**(1.0 / (1.0 - alpha)) - 1.0
+    denominator = 2**(alpha / (1.0 - alpha)) - 1.0
+    return numerator / denominator
+
+def C2(alpha):
+    return 1.5 - 1.0 / math.log(2.0) + 1.0 / (alpha * math.log(2.0))
+
+def C1(alpha):
+    return 1.0 - 1.0 / math.log(2.0) + 1.0 / (alpha * math.log(2.0))
 
 
 def plot_growth_against_multiple_alpha(data_filename, output_filename):
@@ -20,7 +29,7 @@ def plot_growth_against_multiple_alpha(data_filename, output_filename):
     # column names: set_size	amgs_sample_size_avg_alpha_0.25	amgs_sample_size_stddev_alpha_0.25	amgs_sample_size_avg_alpha_0.5	amgs_sample_size_stddev_alpha_0.5	amgs_sample_size_avg_alpha_0.75	amgs_sample_size_stddev_alpha_0.75
     # need to plot sample sizes for different k values against set_size with error bars as shaded region using stddev
 
-    alpha_values = [0.25, 0.3]
+    alpha_values = [0.4, 0.5]
     colors = sns.color_palette("husl", len(alpha_values))
     for alpha, color in zip(alpha_values, colors):
         avg_col = f'amgs_sample_size_avg_alpha_{alpha}'
@@ -33,10 +42,10 @@ def plot_growth_against_multiple_alpha(data_filename, output_filename):
 
     # also plot theoretical line: y = n^alpha for each alpha
     for alpha, color in zip(alpha_values, colors):
-        theoretical_sizes = f(alpha) * df['set_size'] ** alpha
-        plt.plot(df['set_size'], theoretical_sizes, linestyle='--', color=color, alpha=0.8, label='$f(a)*n^a$, a={}'.format(alpha))
-        
-        
+        theoretical_sizes = C2(alpha) * df['set_size'] ** alpha
+        plt.plot(df['set_size'], theoretical_sizes, linestyle='--', color=color, alpha=0.8, label='$C(a)*n^a$, a={}'.format(alpha))
+
+
     # also plot a line y = n/1000
     #plt.plot(df['set_size'], df['set_size']/1000, linestyle=':', color='black', alpha=0.8, label='$n/1000$')
 
