@@ -40,6 +40,9 @@ python scripts/expt_vary_jaccard.py
 # plot accuracy results by varying jaccard
 python scripts/plot_accuracy_by_varying_jaccard.py
 
+# vary jaccard from 0 to 1, see how accuracy changes for alpha-MGS
+python scripts/expt_vary_jaccard_alpha_MGS.py
+
 # fixed similarity, vary set sizes experiments using MGS
 # jaccard
 python scripts/expt_fixed_similarity_vary_set_size.py --t 0.1 --metric jaccard --k 100 --seeds 500 --growth x2 --out results/expt_fixed_jaccard_vary_set_size_jaccard_MGS_k100_t0.1.tsv
