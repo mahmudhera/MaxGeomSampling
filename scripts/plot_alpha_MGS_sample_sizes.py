@@ -42,8 +42,8 @@ def plot_growth_against_multiple_alpha(data_filename, output_filename):
 
     # also plot theoretical line: y = n^alpha for each alpha
     for alpha, color in zip(alpha_values, colors):
-        theoretical_sizes = C2(alpha) * df['set_size'] ** alpha
-        plt.plot(df['set_size'], theoretical_sizes, linestyle='--', color=color, alpha=0.8, label='$C(a)*n^a$, a={}'.format(alpha))
+        theoretical_sizes_C = C(alpha) * df['set_size'] ** alpha
+        plt.plot(df['set_size'], theoretical_sizes_C, linestyle='-', color=color, alpha=0.8, label='$C(a)*n^a$, a={}'.format(alpha))
 
 
     # also plot a line y = n/1000

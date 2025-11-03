@@ -6,6 +6,7 @@ by varying the parameter k.
 import random
 from samplers import AlphaMaxGeomSample
 from helpers.string_utils import generate_random_strings
+from tqdm import tqdm
 
 if __name__ == "__main__":
     random.seed(42)
@@ -20,7 +21,7 @@ if __name__ == "__main__":
     data_size_to_avg_maxgeom_sample_size_per_alpha = {alpha: {} for alpha in alpha_values}
     data_size_to_stddev_maxgeom_sample_size_per_alpha = {alpha: {} for alpha in alpha_values}
 
-    for data_size in data_sizes:
+    for data_size in tqdm(data_sizes):
         data = generate_random_strings(data_size, 10)
 
         for alpha in alpha_values:

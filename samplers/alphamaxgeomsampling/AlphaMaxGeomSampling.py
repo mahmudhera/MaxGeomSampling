@@ -54,9 +54,14 @@ class AlphaMaxGeomSample:
         
         # k sizes per bucket
         self._k_sizes: Dict[int, int] = {}
-        beta = 1 / (1 - alpha) - 1
-        for i in range(1, w + 1):
-            self._k_sizes[i] = int(2 ** (beta * i - 1)) + 1
+        beta = alpha / (1.0 - alpha)
+        for i in range(0, w + 1):
+            ksize_here = 2 ** (beta * i)
+            # take ceiling
+            if ksize_here.is_integer():
+                self._k_sizes[i] = int(ksize_here)
+            else:
+                self._k_sizes[i] = int(ksize_here) + 1
 
     # ---------- Public API ----------
 
