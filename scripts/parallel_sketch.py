@@ -38,13 +38,15 @@ def parse_args() -> argparse.Namespace:
                    help="Path to a text file containing input filenames (one per line).")
     p.add_argument("--threads", type=int, default=os.cpu_count() or 1,
                    help="Number of worker processes (default: number of CPU cores).")
-    p.add_argument("--algo", required=True, choices=["maxgeom", "alphamaxgeom"],
+    p.add_argument("--algo", required=True, choices=["maxgeom", "alphamaxgeom", "fracminhash"],
                    help="Sketching algorithm to use.")
     # Algo-specific params
     p.add_argument("--k", type=int,
                    help="Required if --algo maxgeom. Example: --k 200")
     p.add_argument("--alpha", type=float,
                    help="Required if --algo alphamaxgeom. Example: --alpha 0.75")
+    p.add_argument("--scale", type=float,
+                   help="Required if --algo fracminhash. Example: --scale 0.001")
     # Optional output handling
     p.add_argument("--outdir", type=Path, default=None,
                    help="Directory to place output files. Defaults to the same dir as each input.")
@@ -54,7 +56,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--kmer", type=int, default=31,
                    help="k-mer size (default: 31).")
     p.add_argument("--w", type=int, default=64,
-                   help="Window size (default: 64).")
+                   help="Window size (default: 64, not used for FracMinHash).")
     p.add_argument("--seed", type=int, default=42,
                    help="Random seed (default: 42).")
     p.add_argument("--no-canonical", action="store_true",
@@ -138,6 +140,51 @@ def run_one(cmd: List[str]) -> Tuple[int, str, str]:
     except Exception as e:
         return 1, "", f"Unexpected error: {e}"
 
+
+def run_single_threaded(paths: List[Path], args: argparse.Namespace) -> None:
+    num_failed = 0
+    for f in paths:
+        if not f.exists():
+            print(f"WARNING: input not found, skipping: {f}", file=sys.stderr)
+            continue
+        out = output_for(f, args.algo, args.outdir, args.suffix)
+        try:
+            cmd = build_cmd(
+                input_file=f,
+                output_file=out,
+                algo=args.algo,
+                k=args.k,
+                alpha=args.alpha,
+                kmer=args.kmer,
+                w=args.w,
+                seed=args.seed,
+                canonical=not args.no_canonical,
+            )
+        except ValueError as ve:
+            sys.exit(f"ERROR: {ve}")
+
+        if args.dry_run:
+            print(f"# {f} -> {out}")
+            print(" ".join(map(str, cmd)))
+            continue
+
+        rc, stdout, stderr = run_one(cmd)
+        if rc == 0:
+            print(f"[OK]   {f} -> {out}")
+            if stdout.strip():
+                print(stdout.strip())
+        else:
+            print(f"[FAIL] {f} -> {out} (rc={rc})", file=sys.stderr)
+            num_failed += 1
+            if stderr.strip():
+                print(stderr.strip(), file=sys.stderr)
+                
+    if num_failed:
+        sys.exit(f"Completed with {num_failed} failure(s).")
+    else:
+        print("All jobs completed successfully.")
+
+
 def main() -> None:
     args = parse_args()
 
@@ -148,6 +195,12 @@ def main() -> None:
         sys.exit("ERROR: --algo alphamaxgeom requires --alpha (e.g., --alpha 0.75).")
 
     inputs = read_filelist(args.filelist)
+
+
+    # if only one thread is requested, run single-threaded
+    if args.threads == 1:
+        run_single_threaded(inputs, args)
+        return
 
     # Pre-build jobs (command lines)
     jobs = []
