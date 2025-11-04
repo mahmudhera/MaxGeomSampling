@@ -1,14 +1,3 @@
-"""
-In this script, a filelist is taken as argument, along with the number of threads.
-A process pool is created. Foe each file in the filelist, a sketch is computed in parallel.
-Sketching algo is also taken as argument. 
-If the algo is maxgeom, then the k parameter is also taken as argument.
-If the algo is alphamaxgeom, then the alpha parameter is also taken as argument.
-Sketching command:
-MGS:
-sketch --input {input_filename} --kmer 31 --algo maxgeom --k 200 --w 64 --seed 42 --canonical --output {output_filename}
-"""
-
 #!/usr/bin/env python3
 """
 Parallel sketching runner.
