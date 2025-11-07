@@ -139,7 +139,7 @@ def build_cmd(
     elif algo == "minhash":
         if num_permutations is None:
             raise ValueError("Algorithm 'minhash' requires --num_permutations.")
-        cmd += ["--num_permutations", str(num_permutations)]
+        cmd += ["--num-perm", str(num_permutations)]
 
     return cmd
 
