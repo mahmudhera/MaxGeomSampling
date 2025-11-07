@@ -1,5 +1,6 @@
 from hashes.hash_utils import get_mmh3_hash
 from typing import Iterable
+import random
 
 class MinHashSketch:
     
@@ -17,8 +18,8 @@ class MinHashSketch:
 
 
     def create_minhash_sample(self):
-        # create k seeds based on self.seed
-        seeds = [self.seed + i for i in range(self.k)]
+        # create k seeds randomly based on self.seed
+        seeds = [ random.Random(self.seed + i).randint(0, 2**32 - 1) for i in range(self.k) ]
         minhashes = []
         for seed in seeds:
             min_hash_this_seed = None 
