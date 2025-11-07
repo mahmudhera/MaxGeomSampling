@@ -35,7 +35,7 @@ def estimate_with_minhash(A, B, k, seeds, metric="jaccard"):
     sample_sizes_A = []
     sample_sizes_B = []
 
-    for s in seeds:
+    for s in tqdm(seeds):
         m1 = MinHashSketch(k=k, seed=s)
         m2 = MinHashSketch(k=k, seed=s)
         m1.add_many_items(A)
@@ -84,7 +84,9 @@ def run_experiment(
     with open(output_file, "w") as f:
         f.write("metric\tMinHash_k\tstep\t|A|\t|B|\tmean_sample_size_A\tmean_sample_size_B\ttrue_sim\tmean_est\tmse\n")
 
-    for step in tqdm(range(steps), desc="Steps"):
+    for step in range(steps):
+        print(f"Step {step + 1}/{steps} (set size growth {growth}): ")
+
         n = base_n * (scale ** step)
         A, B = synthesize_sets_jaccard(t, n, universal_pool, rng)
         
