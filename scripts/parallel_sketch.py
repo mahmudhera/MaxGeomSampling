@@ -38,7 +38,7 @@ def parse_args() -> argparse.Namespace:
                    help="Path to a text file containing input filenames (one per line).")
     p.add_argument("--threads", type=int, default=os.cpu_count() or 1,
                    help="Number of worker processes (default: number of CPU cores).")
-    p.add_argument("--algo", required=True, choices=["maxgeom", "alphamaxgeom", "fracminhash"],
+    p.add_argument("--algo", required=True, choices=["maxgeom", "alphamaxgeom", "fracminhash", "minhash"],
                    help="Sketching algorithm to use.")
     # Algo-specific params
     p.add_argument("--k", type=int,
@@ -47,6 +47,8 @@ def parse_args() -> argparse.Namespace:
                    help="Required if --algo alphamaxgeom. Example: --alpha 0.75")
     p.add_argument("--scale", type=float,
                    help="Required if --algo fracminhash. Example: --scale 0.001")
+    p.add_argument("--num_permutations", type=int,
+                   help="Required if --algo minhash. Example: --num_permutations 1000")
     # Optional output handling
     p.add_argument("--outdir", type=Path, default=None,
                    help="Directory to place output files. Defaults to the same dir as each input.")
@@ -101,7 +103,9 @@ def build_cmd(
     kmer: int,
     w: int,
     seed: int,
-    canonical: bool
+    canonical: bool,
+    scale: float,
+    num_permutations: int
 ) -> List[str]:
     """
     Construct the 'sketch' command.
@@ -128,6 +132,15 @@ def build_cmd(
         if alpha is None:
             raise ValueError("Algorithm 'alphamaxgeom' requires --alpha.")
         cmd += ["--alpha", str(alpha)]
+    elif algo == "fracminhash":
+        if scale is None:
+            raise ValueError("Algorithm 'fracminhash' requires --scale.")
+        cmd += ["--scale", str(scale)]
+    elif algo == "minhash":
+        if num_permutations is None:
+            raise ValueError("Algorithm 'minhash' requires --num_permutations.")
+        cmd += ["--num_permutations", str(num_permutations)]
+
     return cmd
 
 def run_one(cmd: List[str]) -> Tuple[int, str, str]:
@@ -159,6 +172,8 @@ def run_single_threaded(paths: List[Path], args: argparse.Namespace) -> None:
                 w=args.w,
                 seed=args.seed,
                 canonical=not args.no_canonical,
+                scale=args.scale,
+                num_permutations=args.num_permutations,
             )
         except ValueError as ve:
             sys.exit(f"ERROR: {ve}")
@@ -220,6 +235,8 @@ def main() -> None:
                 w=args.w,
                 seed=args.seed,
                 canonical=not args.no_canonical,
+                scale=args.scale,
+                num_permutations=args.num_permutations,
             )
         except ValueError as ve:
             sys.exit(f"ERROR: {ve}")
