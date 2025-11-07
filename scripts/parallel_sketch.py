@@ -38,11 +38,11 @@ def parse_args() -> argparse.Namespace:
                    help="Path to a text file containing input filenames (one per line).")
     p.add_argument("--threads", type=int, default=os.cpu_count() or 1,
                    help="Number of worker processes (default: number of CPU cores).")
-    p.add_argument("--algo", required=True, choices=["maxgeom", "alphamaxgeom", "fracminhash", "minhash"],
+    p.add_argument("--algo", required=True, choices=["maxgeom", "alphamaxgeom", "fracminhash", "minhash", "bottomk"],
                    help="Sketching algorithm to use.")
     # Algo-specific params
     p.add_argument("--k", type=int,
-                   help="Required if --algo maxgeom. Example: --k 200")
+                   help="Required if --algo maxgeom or bottomk. Example: --k 200")
     p.add_argument("--alpha", type=float,
                    help="Required if --algo alphamaxgeom. Example: --alpha 0.75")
     p.add_argument("--scale", type=float,
@@ -124,9 +124,9 @@ def build_cmd(
     ]
     if canonical:
         cmd.append("--canonical")
-    if algo == "maxgeom":
+    if algo == "maxgeom" or algo == "bottomk":
         if k is None:
-            raise ValueError("Algorithm 'maxgeom' requires --k.")
+            raise ValueError(f"Algorithm '{algo}' requires --k.")
         cmd += ["--k", str(k)]
     elif algo == "alphamaxgeom":
         if alpha is None:
