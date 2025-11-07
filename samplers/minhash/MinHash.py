@@ -37,11 +37,17 @@ class MinHashSketch:
     
 
     def jaccard_index(self, other: 'MinHashSketch') -> float:
-        num_mathes = 0
+        if self.k != other.k:
+            raise ValueError("Both MinHashSketch instances must have the same k value for Jaccard index computation.")
+        if not hasattr(self, "minhashes"):
+            self.create_minhash_sample()
+        if not hasattr(other, "minhashes"):
+            other.create_minhash_sample()
+        num_matches = 0
         for minhash1, minhash2 in zip(self.minhashes, other.minhashes):
             if minhash1 == minhash2:
-                num_mathes += 1
-        return num_mathes / self.k
+                num_matches += 1
+        return num_matches / self.k
 
 
     def sample_size(self) -> int:
