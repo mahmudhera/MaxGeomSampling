@@ -53,10 +53,12 @@ def parse_args():
     p.add_argument("--average-duplicates", action="store_true",
                    help="If both (A,B) and (B,A) appear or duplicates exist, average them "
                         "(default is to require consistency).")
+    p.add_argument("--kmer-size", type=int, default=31,
+                   help="K-mer size for mutation rate distance conversion (default: 31)")
     return p.parse_args()
 
 
-def sim_to_dist(sim: float, mode: str, eps: float) -> float:
+def sim_to_dist(sim: float, mode: str, eps: float, kmer_size: int) -> float:
     if mode == "one-minus":
         return 1.0 - sim
     elif mode == "neg-log":
@@ -68,8 +70,8 @@ def sim_to_dist(sim: float, mode: str, eps: float) -> float:
         elif sim <= 0.0:
             return 1.0
         else:
-            ksize = 31
-            return 1.0 - ( (2.0 * sim) / (1.0 + sim) ) ** (1.0 / ksize)
+            # this only works if sim is Jaccard similarity from k-mer sets
+            return 1.0 - ( (2.0 * sim) / (1.0 + sim) ) ** (1.0 / kmer_size)
     else:
         raise ValueError(f"Unknown conversion mode: {mode}")
 
@@ -78,7 +80,8 @@ def read_pairs(in_path: str,
                as_what: str,
                conv_mode: str,
                eps: float,
-               average_duplicates: bool) -> Tuple[List[str], Dict[Tuple[str, str], float]]:
+               average_duplicates: bool,
+               kmer_size: int) -> Tuple[List[str], Dict[Tuple[str, str], float]]:
     """
     Returns:
       - sorted list of taxa
@@ -108,7 +111,7 @@ def read_pairs(in_path: str,
             taxa.update([a, b])
 
             if as_what == "similarity":
-                d = sim_to_dist(val, conv_mode, eps)
+                d = sim_to_dist(val, conv_mode, eps, kmer_size)
             else:
                 d = val
 
@@ -184,6 +187,7 @@ def main():
         conv_mode=args.similarity_to_distance,
         eps=args.eps,
         average_duplicates=args.average_duplicates,
+        kmer_size=args.kmer_size,
     )
 
     if len(taxa) < 3:
