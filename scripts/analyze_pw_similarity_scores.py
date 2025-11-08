@@ -211,7 +211,7 @@ def main():
         'Homo_sapiens'              : 'Human',
         'Monodelphis_domestica'     : 'Opossum',
         'Mus_musculus'              : 'Mouse',
-        'Pan_troglodytes'           : 'Chimpanzee',
+        'Pan_troglodytes'           : 'Chimpanzee                 ',
         'Rattus_norvegicus'         : 'Rat',
         'Sus_scrofa'                : 'Pig',
     }
@@ -237,18 +237,29 @@ def main():
     except Exception:
         pass
 
+    for clade in tree.find_clades():
+        clade.color = 'black'
+        clade.width = 0.4
+
+    # set font size to 10
+    matplotlib.rcParams.update({'font.size': 8})
     # Plot and save
-    fig = plt.figure(figsize=(8, 6), dpi=150)
+    fig = plt.figure(figsize=(4, 3))
     ax = fig.add_subplot(1, 1, 1)
+    # draw tree, make edges thin
     Phylo.draw(tree, do_show=False, axes=ax)
-    plt.tight_layout()
     # remove y ticks and labels
     ax.yaxis.set_ticks([])
     ax.yaxis.set_ticklabels([])
     # set x label to "Branch length (mutation rate)"
     ax.set_xlabel("Branch length (mutation rate)")
+    if 'bottomk' in args.in_path:
+        # set xlim to 0.12
+        ax.set_xlim(right=0.14)
+    else:
+        ax.set_xlim(right=0.16)
+    plt.tight_layout()
     plt.savefig(args.out_plot, bbox_inches="tight")
-    plt.close(fig)
 
     print(f"Wrote Newick to: {args.out_newick}")
     print(f"Wrote plot to:   {args.out_plot}")
