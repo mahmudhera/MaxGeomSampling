@@ -58,7 +58,7 @@ def estimate_with_fmh(A, B, scale_factor, seeds, metric="jaccard"):
     sample_sizes_A = []
     sample_sizes_B = []
 
-    for s in seeds:
+    for s in tqdm(seeds):
         m1 = FracMinHashSketch(scale=scale_factor, seed=s)
         m2 = FracMinHashSketch(scale=scale_factor, seed=s)
         m1.add_many_items(A)

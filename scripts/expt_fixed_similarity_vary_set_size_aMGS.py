@@ -58,7 +58,7 @@ def estimate_with_aMGS(A, B, alpha, seeds, metric="jaccard"):
     sample_sizes_A = []
     sample_sizes_B = []
 
-    for s in seeds:
+    for s in tqdm(seeds):
         m1 = AlphaMaxGeomSample(alpha=alpha, seed=s)
         m2 = AlphaMaxGeomSample(alpha=alpha, seed=s)
         m1.add_many_items(A)
