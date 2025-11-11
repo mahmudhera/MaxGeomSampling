@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 if __name__ == "__main__":
     random.seed(42)
-    num_runs_each_setting = 20
+    num_runs_each_setting = 50
     w = 64
     #k_values = [25, 50, 100, 200, 400, 800]
     k_values = [70, 80, 90, 100]
