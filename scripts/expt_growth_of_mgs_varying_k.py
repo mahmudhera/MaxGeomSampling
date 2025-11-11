@@ -11,7 +11,8 @@ if __name__ == "__main__":
     random.seed(42)
     num_runs_each_setting = 20
     w = 64
-    k_values = [25, 50, 100, 200, 400, 800]
+    #k_values = [25, 50, 100, 200, 400, 800]
+    k_values = [70, 80, 90, 100]
 
     # generate data sizes
     data_sizes = [i for i in range(10000, 1000001, 10000)]
