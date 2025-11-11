@@ -43,35 +43,42 @@ if __name__ == "__main__":
     # (1): output plot name: fixed_{metric}_vary_set_size_sample_size_t{t}.pdf
     output_plot1 = f"plots/fixed_{metric}_vary_set_size_sample_size_t{t}.pdf"
 
+    colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#ab93b7']
+    markers = ['D', 'o', '<', '>', '^', 'v', '*', 'P', 'X']
+
     plt.figure(figsize=(4, 3))
-    sns.lineplot(data=df_mgs, x='|A|', y='mean_sample_size_A', label=f'MaxGeomHash (k={k_mgh})', marker='o')
-    sns.lineplot(data=df_amg, x='|A|', y='mean_sample_size_A', label=f'α-MaxGeomHash (α={alpha})', marker='^')
-    sns.lineplot(data=df_fmh, x='|A|', y='mean_sample_size_A', label=f'FracMinHash (s={scale})', marker='d')
+    # set fontsize to 10
+    plt.rcParams.update({'font.size': 10})
+    sns.lineplot(data=df_mgs, x='|A|', y='mean_sample_size_A', label=f'MaxGeomHash (k={k_mgh})', marker=markers[1], color=colors[1])
+    sns.lineplot(data=df_amg, x='|A|', y='mean_sample_size_A', label=f'α-MaxGeomHash (α={alpha})', marker=markers[5], color=colors[5])
+    sns.lineplot(data=df_fmh, x='|A|', y='mean_sample_size_A', label=f'FracMinHash (s={scale})', marker=markers[7], color=colors[7])
     if metric == 'jaccard':
-        sns.lineplot(data=df_mh, x='|A|', y='mean_sample_size_A', label=f'MinHash (k={k_mh})', marker='v')
+        sns.lineplot(data=df_mh, x='|A|', y='mean_sample_size_A', label=f'MinHash (k={k_mh})', marker=markers[8], color=colors[8])
     plt.xscale('log')
     plt.yscale('log')
     plt.xlabel('Set sizes')
     plt.ylabel('Mean sketch size')
     # decrease legend font size
-    plt.legend(fontsize='small')
+    plt.legend(fontsize=8)
     plt.tight_layout()
+    plt.grid(True, alpha=0.3)
     plt.savefig(output_plot1)
     plt.close()
 
     # (2): output plot name: fixed_{metric}_vary_set_size_mse_t{t}.pdf
     output_plot2 = f"plots/fixed_{metric}_vary_set_size_mse_t{t}.pdf"
     plt.figure(figsize=(4, 3))
-    sns.lineplot(data=df_mgs, x='|A|', y='mse', label=f'MaxGeomHash (k={k_mgh})', marker='o')
-    sns.lineplot(data=df_amg, x='|A|', y='mse', label=f'α-MaxGeomHash (α={alpha})', marker='^')
-    sns.lineplot(data=df_fmh, x='|A|', y='mse', label=f'FracMinHash (s={scale})', marker='d')
+    sns.lineplot(data=df_mgs, x='|A|', y='mse', label=f'MaxGeomHash (k={k_mgh})', marker=markers[1], color=colors[1])
+    sns.lineplot(data=df_amg, x='|A|', y='mse', label=f'α-MaxGeomHash (α={alpha})', marker=markers[5], color=colors[5])
+    sns.lineplot(data=df_fmh, x='|A|', y='mse', label=f'FracMinHash (s={scale})', marker=markers[7], color=colors[7])
     if metric == 'jaccard':
-        sns.lineplot(data=df_mh, x='|A|', y='mse', label=f'MinHash (k={k_mh})', marker='v')
+        sns.lineplot(data=df_mh, x='|A|', y='mse', label=f'MinHash (k={k_mh})', marker=markers[8], color=colors[8])
     plt.xscale('log')
     plt.yscale('log')
     plt.xlabel('Set sizes')
     plt.ylabel('Mean Squared Error (MSE)')
-    plt.legend(fontsize='small')
+    plt.legend(fontsize=8)
     plt.tight_layout()
+    plt.grid(True, alpha=0.3)
     plt.savefig(output_plot2)
     plt.close()

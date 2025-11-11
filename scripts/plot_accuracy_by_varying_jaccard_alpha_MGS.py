@@ -13,26 +13,33 @@ if __name__ == "__main__":
     # plot true jaccard vs estimated jaccard for each method and parameter
     # method names: MGS, alpha-MGS. each method has four parameters
     alpha_values_tested = [0.4, 0.45, 0.5]
-    colors = sns.color_palette("husl", len(alpha_values_tested))
+    colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6'][4:7]
+    markers = ['D', 'o', '<', '>', '^', 'v', '*', 'P', 'X'][4:7]
 
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(4, 3))
     color_idx = 0
     for alpha in alpha_values_tested:
         subset = df[df['alpha'] == alpha]
-        plt.scatter(subset['True_Jaccard'], subset['Estimated_Jaccard'], label=f'AlphaMaxGeomSampling (alpha={alpha})', color=colors[color_idx], alpha=0.3, s=10)
+        plt.scatter(subset['True_Jaccard'], subset['Estimated_Jaccard'], label=f'α-MaxGeomHash (α={alpha})', color=colors[color_idx], alpha=0.3, s=10)
         color_idx += 1
     
     # plot a diagonal line y=x
     max_val = df['True_Jaccard'].max()
     print(max_val)
-    plt.plot([0, max_val], [0, max_val], 'k--', label='True Jaccard', alpha=0.4)
+    plt.plot([0, max_val], [0, max_val], 'k--', label='True Jaccard', linewidth=0.75)
     plt.xlabel('True Jaccard')
     plt.ylabel('Estimated Jaccard')
-    plt.title('Estimated vs. True Jaccard for AlphaMaxGeomSampling')
-    plt.legend()
+    plt.legend(fontsize=8)
+
+    # change the alpha values in the legend to 1.0
+    leg = plt.gca().get_legend()
+    for handle in leg.legend_handles:
+        handle.set_alpha(1.0)
+
     plt.grid(True, alpha=0.3)
     # export with high resolution
-    plt.savefig(output_file, dpi=300)
+    plt.tight_layout()
+    plt.savefig(output_file, dpi=500)
     plt.close()
     
     print("Plot saved to: ", output_file )

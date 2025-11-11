@@ -167,3 +167,15 @@ python scripts/analyze_pw_similarity_scores.py --in results/pw_jaccard_alphamaxg
 python scripts/analyze_pw_similarity_scores.py --in results/pw_jaccard_bottomk.csv --out-newick results/phylo_tree_mammals_minhash.nwk --out-plot plots/phylo_tree_mammals_minhash.pdf --treat-as similarity --similarity-to-distance mutrate --kmer-size 31
 
 # trees are to be beautified using Illustrator later
+
+
+
+
+
+
+# only the plotting commands
+python scripts/plot_sample_sizes.py 
+python scripts/plot_alpha_MGS_sample_sizes.py
+python scripts/plot_accuracy_by_varying_jaccard.py
+python scripts/plot_accuracy_by_varying_jaccard_alpha_MGS.py
+python scripts/plot_fixed_t_results.py --t 0.5 --alpha 0.45 --k_mgh 80 --scale 0.001 --k_mh 1000 --metric jaccard
