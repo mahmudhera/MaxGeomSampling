@@ -6,6 +6,7 @@ by varying the parameter k.
 import random
 from samplers import MaxGeomSample
 from helpers.string_utils import generate_random_strings
+from tqdm import tqdm
 
 if __name__ == "__main__":
     random.seed(42)
