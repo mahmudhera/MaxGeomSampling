@@ -114,6 +114,7 @@ python scripts/expt_fixed_similarity_vary_set_size_MH.py --t 0.5 --metric jaccar
 expt_growth --t 0.5 --metric jaccard --seeds 50 --steps 10 --growth x2 --out results/fixed_jaccard_expt_amgh_t0.5_a0.45 --algo alphamaxgeom --alpha 0.45 --base_n 100000
 expt_growth --t 0.5 --metric jaccard --seeds 50 --steps 10 --growth x2 --out results/fixed_jaccard_expt_mh_t0.5_k1000 --algo bottomk --k 1000 --base_n 100000
 expt_growth --t 0.5 --metric jaccard --seeds 50 --steps 10 --growth x2 --out results/fixed_jaccard_expt_mgh_t0.5_k100 --algo maxgeom --k 100 --base_n 100000
+expt_growth --t 0.5 --metric jaccard --seeds 50 --steps 10 --growth x2 --out results/fixed_jaccard_expt_mgh_t0.5_k80 --algo maxgeom --k 80 --base_n 100000
 expt_growth --t 0.5 --metric jaccard --seeds 50 --steps 10 --growth x2 --out results/fixed_jaccard_expt_fmh_t0.5_s0.001 --algo fracminhash --scale 0.001 --base_n 100000
 
 
@@ -142,9 +143,9 @@ cd ..
 
 # sketch commands (manually record CPU time, peak memory usage, and disk space for the sketch files)
 # all sketch files are created in data
-/usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo maxgeom --k 100
+/usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo maxgeom --k 80
 /usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo fracminhash --scale 0.001
-/usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo alphamaxgeom --alpha 0.5
+/usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo alphamaxgeom --alpha 0.45
 /usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo bottomk --k 1000
 
 # finding disk-space
