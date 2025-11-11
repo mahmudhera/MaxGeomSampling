@@ -4,6 +4,10 @@ pip install --file requirements.txt
 
 export PYTHONPATH=$(pwd):$PYTHONPATH
 
+# install kmer-sketch program, c++ implementation of MGS
+# follow instructions on GitHub, add binary location to PATH
+export PATH=/scratch/mbr5797/kmer-sketch/bin:$PATH
+
 # basic implementation test
 python scripts/expt_basic_implementation.py
 
@@ -85,6 +89,18 @@ python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.3 --metric cosi
 python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.4 --metric cosine --alpha 0.25 --seeds 200 --growth x2 --out results/expt_fixed_cosine_vary_set_size_cosine_aMGS_alpha0.25_t0.4.tsv
 python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.5 --metric cosine --alpha 0.25 --seeds 200 --growth x2 --out results/expt_fixed_cosine_vary_set_size_cosine_aMGS_alpha0.25_t0.5.tsv
 
+# jaccard and cosine, alpha=0.4
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.1 --metric jaccard --alpha 0.4 --seeds 200 --growth x2 --out results/expt_fixed_jaccard_vary_set_size_jaccard_aMGS_alpha0.4_t0.1.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.2 --metric jaccard --alpha 0.4 --seeds 200 --growth x2 --out results/expt_fixed_jaccard_vary_set_size_jaccard_aMGS_alpha0.4_t0.2.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.3 --metric jaccard --alpha 0.4 --seeds 200 --growth x2 --out results/expt_fixed_jaccard_vary_set_size_jaccard_aMGS_alpha0.4_t0.3.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.4 --metric jaccard --alpha 0.4 --seeds 200 --growth x2 --out results/expt_fixed_jaccard_vary_set_size_jaccard_aMGS_alpha0.4_t0.4.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.5 --metric jaccard --alpha 0.4 --seeds 200 --growth x2 --out results/expt_fixed_jaccard_vary_set_size_jaccard_aMGS_alpha0.4_t0.5.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.1 --metric cosine --alpha 0.4 --seeds 200 --growth x2 --out results/expt_fixed_cosine_vary_set_size_cosine_aMGS_alpha0.4_t0.1.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.2 --metric cosine --alpha 0.4 --seeds 200 --growth x2 --out results/expt_fixed_cosine_vary_set_size_cosine_aMGS_alpha0.4_t0.2.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.3 --metric cosine --alpha 0.4 --seeds 200 --growth x2 --out results/expt_fixed_cosine_vary_set_size_cosine_aMGS_alpha0.4_t0.3.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.4 --metric cosine --alpha 0.4 --seeds 200 --growth x2 --out results/expt_fixed_cosine_vary_set_size_cosine_aMGS_alpha0.4_t0.4.tsv
+python scripts/expt_fixed_similarity_vary_set_size_aMGS.py --t 0.5 --metric cosine --alpha 0.4 --seeds 200 --growth x2 --out results/expt_fixed_cosine_vary_set_size_cosine_aMGS_alpha0.4_t0.5.tsv
+
 # fixed jaccard, vary set sizes, estimate using MinHash
 python scripts/expt_fixed_similarity_vary_set_size_MH.py --t 0.1 --metric jaccard --k 500 --seeds 200 --growth x2 --out results/expt_fixed_jaccard_vary_set_size_jaccard_MH_k500_t0.1.tsv
 python scripts/expt_fixed_similarity_vary_set_size_MH.py --t 0.2 --metric jaccard --k 500 --seeds 200 --growth x2 --out results/expt_fixed_jaccard_vary_set_size_jaccard_MH_k500_t0.2.tsv
@@ -93,13 +109,17 @@ python scripts/expt_fixed_similarity_vary_set_size_MH.py --t 0.4 --metric jaccar
 python scripts/expt_fixed_similarity_vary_set_size_MH.py --t 0.5 --metric jaccard --k 500 --seeds 200 --growth x2 --out results/expt_fixed_jaccard_vary_set_size_jaccard_MH_k500_t0.5.tsv
 
 
+# fixed jaccard experiment for even larger sets 
+# uses cpp implementation 
+expt_growth --t 0.5 --metric jaccard --seeds 50 --steps 10 --growth x2 --out results/fixed_jaccard_expt_amgh_t0.5_a0.45 --algo alphamaxgeom --alpha 0.45 --base_n 100000
+expt_growth --t 0.5 --metric jaccard --seeds 50 --steps 10 --growth x2 --out results/fixed_jaccard_expt_mh_t0.5_k1000 --algo bottomk --k 1000 --base_n 100000
+expt_growth --t 0.5 --metric jaccard --seeds 50 --steps 10 --growth x2 --out results/fixed_jaccard_expt_mgh_t0.5_k100 --algo maxgeom --k 100 --base_n 100000
+expt_growth --t 0.5 --metric jaccard --seeds 50 --steps 10 --growth x2 --out results/fixed_jaccard_expt_fmh_t0.5_s0.001 --algo fracminhash --scale 0.001 --base_n 100000
+
+
 #################################################
 # Real-world data experiments
 #################################################
-
-# install kmer-sketch program, c++ implementation of MGS
-# follow instructions on GitHub, add binary location to PATH
-export PATH=/scratch2/mbr5797/kmer-sketch/bin:$PATH
 
 
 # downloading mammal genomes: Human, Chimpanzee, Mouse, Rat, Dog, Cat, Cow, Pig, Horse, Opossum
@@ -122,9 +142,9 @@ cd ..
 
 # sketch commands (manually record CPU time, peak memory usage, and disk space for the sketch files)
 # all sketch files are created in data
-/usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo maxgeom --k 800
+/usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo maxgeom --k 100
 /usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo fracminhash --scale 0.001
-/usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo alphamaxgeom --alpha 0.4
+/usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo alphamaxgeom --alpha 0.5
 /usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo bottomk --k 1000
 
 # finding disk-space
