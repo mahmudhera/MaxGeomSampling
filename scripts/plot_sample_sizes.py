@@ -44,7 +44,8 @@ def plot_growth_against_multiple_k(data_filename, output_filename):
     # need to plot sample sizes for different k values against set_size with error bars as shaded region using stddev
 
     #k_values = [25, 50, 100, 200, 400, 800]
-    k_values = [200, 400, 800]
+    #k_values = [200, 400, 800]
+    k_values = [70, 80, 90, 100]
     colors = sns.color_palette("husl", len(k_values))
     for k, color in zip(k_values, colors):
         avg_col = f'mgs_sample_size_avg_k_{k}'

@@ -16,7 +16,7 @@ We repeat this for different alpha values of alpha-MGS (alpha-MaxGeomSampling).
 if __name__ == '__main__':
     # constants
     num_trials = 5000
-    alpha_values_tested = [0.2, 0.3, 0.4, 0.5]
+    alpha_values_tested = [0.4, 0.45, 0.5]
     output_file = 'results/results_accuracy_by_varying_jaccard_alpha_MGS'
     random_seed = 42
     random.seed(random_seed)

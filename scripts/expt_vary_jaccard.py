@@ -16,7 +16,7 @@ We repeat this for different k values of MGS (MaxGeomSampling).
 if __name__ == '__main__':
     # constants
     num_trials = 5000
-    k_values_tested = [50, 100, 200, 400]
+    k_values_tested = [70, 80, 90, 100]
     output_file = 'results/results_accuracy_by_varying_jaccard'
     random_seed = 42
     random.seed(random_seed)

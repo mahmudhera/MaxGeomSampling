@@ -21,7 +21,7 @@ if __name__ == "__main__":
     data_size_to_avg_maxgeom_sample_size_per_k = {k: {} for k in k_values}
     data_size_to_stddev_maxgeom_sample_size_per_k = {k: {} for k in k_values}
     
-    for data_size in data_sizes:
+    for data_size in tqdm(data_sizes):
         data = generate_random_strings(data_size, 10)
         
         for k in k_values:

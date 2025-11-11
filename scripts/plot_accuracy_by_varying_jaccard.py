@@ -12,7 +12,7 @@ if __name__ == "__main__":
     
     # plot true jaccard vs estimated jaccard for each method and parameter
     # method names: MGS, alpha-MGS. each method has four parameters
-    k_values_tested = [50, 100, 200, 400]
+    k_values_tested = [70, 80, 90, 100]
     colors = sns.color_palette("husl", len(k_values_tested))
 
     plt.figure(figsize=(8, 6))
