@@ -178,4 +178,4 @@ python scripts/plot_sample_sizes.py
 python scripts/plot_alpha_MGS_sample_sizes.py
 python scripts/plot_accuracy_by_varying_jaccard.py
 python scripts/plot_accuracy_by_varying_jaccard_alpha_MGS.py
-python scripts/plot_fixed_t_results.py --t 0.5 --alpha 0.45 --k_mgh 80 --scale 0.001 --k_mh 1000 --metric jaccard
+python scripts/plot_fixed_t_results.py --t 0.5 --alpha 0.45 --k_mgh 90 --scale 0.001 --k_mh 1000 --metric jaccard

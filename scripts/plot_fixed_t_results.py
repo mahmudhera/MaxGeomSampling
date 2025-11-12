@@ -51,9 +51,9 @@ if __name__ == "__main__":
     plt.rcParams.update({'font.size': 10})
 
     if metric == 'jaccard':
-        sns.lineplot(data=df_mh, x='|A|', y='mean_sample_size_A', label=f'MinHash (k={k_mh})', marker=markers[8], color=colors[8])
-    sns.lineplot(data=df_fmh, x='|A|', y='mean_sample_size_A', label=f'FracMinHash (s={scale})', marker=markers[7], color=colors[7])
-    sns.lineplot(data=df_mgs, x='|A|', y='mean_sample_size_A', label=f'MaxGeomHash (k={k_mgh})', marker=markers[1], color=colors[1])
+        sns.lineplot(data=df_mh, x='|A|', y='mean_sample_size_A', label=f'MinHash ($k$={k_mh})', marker=markers[8], color=colors[8])
+    sns.lineplot(data=df_fmh, x='|A|', y='mean_sample_size_A', label=f'FracMinHash ($s$={scale})', marker=markers[7], color=colors[7])
+    sns.lineplot(data=df_mgs, x='|A|', y='mean_sample_size_A', label=f'MaxGeomHash ($b$={k_mgh})', marker=markers[1], color=colors[1])
     sns.lineplot(data=df_amg, x='|A|', y='mean_sample_size_A', label=f'α-MaxGeomHash (α={alpha})', marker=markers[5], color=colors[5])
 
     plt.xscale('log')
@@ -72,9 +72,9 @@ if __name__ == "__main__":
     plt.figure(figsize=(4, 3))
     
     if metric == 'jaccard':
-        sns.lineplot(data=df_mh, x='|A|', y='mse', label=f'MinHash (k={k_mh})', marker=markers[8], color=colors[8])
-    sns.lineplot(data=df_fmh, x='|A|', y='mse', label=f'FracMinHash (s={scale})', marker=markers[7], color=colors[7])
-    sns.lineplot(data=df_mgs, x='|A|', y='mse', label=f'MaxGeomHash (k={k_mgh})', marker=markers[1], color=colors[1])
+        sns.lineplot(data=df_mh, x='|A|', y='mse', label=f'MinHash ($k$={k_mh})', marker=markers[8], color=colors[8])
+    sns.lineplot(data=df_fmh, x='|A|', y='mse', label=f'FracMinHash ($s$={scale})', marker=markers[7], color=colors[7])
+    sns.lineplot(data=df_mgs, x='|A|', y='mse', label=f'MaxGeomHash ($b$={k_mgh})', marker=markers[1], color=colors[1])
     sns.lineplot(data=df_amg, x='|A|', y='mse', label=f'α-MaxGeomHash (α={alpha})', marker=markers[5], color=colors[5])
 
     plt.xscale('log')
