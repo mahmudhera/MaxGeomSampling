@@ -13,8 +13,10 @@ if __name__ == "__main__":
     # plot true jaccard vs estimated jaccard for each method and parameter
     # method names: MGS, alpha-MGS. each method has four parameters
     alpha_values_tested = [0.4, 0.45, 0.5]
-    colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6'][4:7]
-    markers = ['D', 'o', '<', '>', '^', 'v', '*', 'P', 'X'][4:7]
+    colors = ['#a6cee3','#b2df8a', '#1f78b4', '#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#ab93b7']
+    markers = ['D', '<', 'o', '>', '^', 'v', '*', 'P', 'X']
+    colors = colors[4:7]
+    markers = markers[4:7]
 
     plt.figure(figsize=(4, 3))
     color_idx = 0

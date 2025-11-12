@@ -23,8 +23,11 @@ def plot_growth_against_multiple_k(data_filename, output_filename):
     #k_values = [25, 50, 100, 200, 400, 800]
     #k_values = [200, 400, 800]
     k_values = [70, 80, 90, 100]
-    colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6'][0:4]
-    markers = ['D', 'o', '<', '>', '^', 'v', '*', 'P', 'X'][0:4]
+    k_values = [70, 80, 90, 100]
+    colors = ['#a6cee3','#b2df8a', '#1f78b4', '#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#ab93b7']
+    markers = ['D', '<', 'o', '>', '^', 'v', '*', 'P', 'X']
+    colors = colors[0:4]
+    markers = markers[0:4]
 
     # also plot theoretical line: y = k * long(n/k) for each k
     for k, color in zip(k_values, colors):
@@ -70,8 +73,10 @@ def plot_growth_against_multiple_k_stddev(data_filename, output_filename):
     #k_values = [25, 50, 100, 200, 400, 800]
     #k_values = [200, 400, 800]
     k_values = [70, 80, 90, 100]
-    colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6'][0:4]
-    markers = ['D', 'o', '<', '>', '^', 'v', '*', 'P', 'X'][0:4]
+    colors = ['#a6cee3','#b2df8a', '#1f78b4', '#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#ab93b7']
+    markers = ['D', '<', 'o', '>', '^', 'v', '*', 'P', 'X']
+    colors = colors[0:4]
+    markers = markers[0:4]
 
     for k, color, marker in zip(k_values, colors, markers):
         stddev_col = f'mgs_sample_size_stddev_k_{k}'

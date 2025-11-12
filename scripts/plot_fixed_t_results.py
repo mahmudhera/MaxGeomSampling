@@ -43,8 +43,8 @@ if __name__ == "__main__":
     # (1): output plot name: fixed_{metric}_vary_set_size_sample_size_t{t}.pdf
     output_plot1 = f"plots/fixed_{metric}_vary_set_size_sample_size_t{t}.pdf"
 
-    colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#ab93b7']
-    markers = ['D', 'o', '<', '>', '^', 'v', '*', 'P', 'X']
+    colors = ['#a6cee3','#b2df8a', '#1f78b4', '#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#ab93b7']
+    markers = ['D', '<', 'o', '>', '^', 'v', '*', 'P', 'X']
 
     plt.figure(figsize=(4, 3))
     # set fontsize to 10
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     if metric == 'jaccard':
         sns.lineplot(data=df_mh, x='|A|', y='mean_sample_size_A', label=f'MinHash ($k$={k_mh})', marker=markers[8], color=colors[8])
     sns.lineplot(data=df_fmh, x='|A|', y='mean_sample_size_A', label=f'FracMinHash ($s$={scale})', marker=markers[7], color=colors[7])
-    sns.lineplot(data=df_mgs, x='|A|', y='mean_sample_size_A', label=f'MaxGeomHash ($b$={k_mgh})', marker=markers[1], color=colors[1])
+    sns.lineplot(data=df_mgs, x='|A|', y='mean_sample_size_A', label=f'MaxGeomHash ($b$={k_mgh})', marker=markers[2], color=colors[2])
     sns.lineplot(data=df_amg, x='|A|', y='mean_sample_size_A', label=f'α-MaxGeomHash (α={alpha})', marker=markers[5], color=colors[5])
 
     plt.xscale('log')
@@ -74,7 +74,7 @@ if __name__ == "__main__":
     if metric == 'jaccard':
         sns.lineplot(data=df_mh, x='|A|', y='mse', label=f'MinHash ($k$={k_mh})', marker=markers[8], color=colors[8])
     sns.lineplot(data=df_fmh, x='|A|', y='mse', label=f'FracMinHash ($s$={scale})', marker=markers[7], color=colors[7])
-    sns.lineplot(data=df_mgs, x='|A|', y='mse', label=f'MaxGeomHash ($b$={k_mgh})', marker=markers[1], color=colors[1])
+    sns.lineplot(data=df_mgs, x='|A|', y='mse', label=f'MaxGeomHash ($b$={k_mgh})', marker=markers[2], color=colors[2])
     sns.lineplot(data=df_amg, x='|A|', y='mse', label=f'α-MaxGeomHash (α={alpha})', marker=markers[5], color=colors[5])
 
     plt.xscale('log')

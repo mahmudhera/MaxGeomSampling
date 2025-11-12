@@ -38,8 +38,10 @@ def plot_growth_against_multiple_alpha(data_filename, output_filename):
 
     #alpha_values = [0.3, 0.4, 0.5]
     alpha_values = [0.4, 0.45, 0.5]
-    colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6'][4:7]
-    markers = ['D', 'o', '<', '>', '^', 'v', '*', 'P', 'X'][4:7]
+    colors = ['#a6cee3','#b2df8a', '#1f78b4', '#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#ab93b7']
+    markers = ['D', '<', 'o', '>', '^', 'v', '*', 'P', 'X']
+    colors = colors[4:7]
+    markers = markers[4:7]
 
     for alpha, color, marker in zip(alpha_values, colors, markers):
         avg_col = f'amgs_sample_size_avg_alpha_{alpha}'
@@ -84,8 +86,11 @@ def plot_growth_against_multiple_alpha_stddev(data_filename, output_filename):
 
     #alpha_values = [0.3, 0.4, 0.5]
     alpha_values = [0.4, 0.45, 0.5]
-    colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6'][4:7]
-    markers = ['D', 'o', '<', '>', '^', 'v', '*', 'P', 'X'][4:7]
+    k_values = [70, 80, 90, 100]
+    colors = ['#a6cee3','#b2df8a', '#1f78b4', '#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#ab93b7']
+    markers = ['D', '<', 'o', '>', '^', 'v', '*', 'P', 'X']
+    colors = colors[4:7]
+    markers = markers[4:7]
 
     for alpha, color, marker in zip(alpha_values, colors, markers):
         stddev_col = f'amgs_sample_size_stddev_alpha_{alpha}'
@@ -110,7 +115,3 @@ if __name__ == "__main__":
     input_file = os.path.join('results', 'results_growth_of_amgs_varying_alpha')
     output_file = os.path.join('plots', 'growth_of_alpha_mgs_samples.pdf')
     plot_growth_against_multiple_alpha(input_file, output_file)
-
-    input_file_stddev = os.path.join('results', 'results_growth_of_amgs_varying_alpha')
-    output_file_stddev = os.path.join('plots', 'growth_stddev_of_alpha_mgs_samples.pdf')
-    plot_growth_against_multiple_alpha_stddev(input_file_stddev, output_file_stddev)
