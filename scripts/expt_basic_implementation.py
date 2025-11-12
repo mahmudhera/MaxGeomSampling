@@ -65,3 +65,30 @@ if __name__ == "__main__":
     fmh_jaccard = fmh_sketch.jaccard_index(fmh_sketch2)
     print(f"Jaccard index between FMH sketches: {fmh_jaccard:.4f}")
     
+    # generate two large sets, take MGS samples, do union, and check if equal to MGS of union
+    data3 = generate_random_strings(100000, 10)
+    data4 = generate_random_strings(100000, 10)
+    sample3 = MaxGeomSample(k=100, w=64, seed=42)
+    sample3.add_many_items(data3)
+    sample4 = MaxGeomSample(k=100, w=64, seed=42)
+    sample4.add_many_items(data4)
+    union_sample = sample3.merge_untested(sample4)
+    combined_data = data3 + data4
+    combined_sample = MaxGeomSample(k=100, w=64, seed=42)
+    combined_sample.add_many_items(combined_data)
+    print(f"Union of samples equals sample of union: {union_sample == combined_sample}")
+
+    # do the same test for 10 different random seeds
+    all_equal = True
+    for seed in range(10):
+        sample3 = MaxGeomSample(k=100, w=64, seed=seed)
+        sample3.add_many_items(data3)
+        sample4 = MaxGeomSample(k=100, w=64, seed=seed)
+        sample4.add_many_items(data4)
+        union_sample = sample3.union(sample4)
+        combined_sample = MaxGeomSample(k=100, w=64, seed=seed)
+        combined_sample.add_many_items(combined_data)
+        if union_sample != combined_sample:
+            all_equal = False
+            break
+    print(f"Union of samples equals sample of union for 10 seeds: {all_equal}")

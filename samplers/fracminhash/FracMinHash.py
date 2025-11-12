@@ -50,3 +50,17 @@ class FracMinHashSketch:
         if len(self.hashes) == 0:
             return 1.0  # self is empty
         return intersection / len(self.hashes)
+
+
+    def cosine_similarity(self, other: 'FracMinHashSketch') -> float:
+        if not isinstance(other, FracMinHashSketch):
+            raise ValueError("Can only compute Cosine similarity with another FracMinHashSketch")
+        intersection = len(self.hashes.intersection(other.hashes))
+        norm_self = len(self.hashes)
+        norm_other = len(other.hashes)
+        if norm_self == 0 or norm_other == 0:
+            return 1.0  # One or both are empty
+        return intersection / ((norm_self * norm_other) ** 0.5)
+
+    def sample_size(self) -> int:
+        return len(self.hashes)

@@ -208,7 +208,7 @@ class MaxGeomSample:
         return intersection_size / union_size
 
 
-    def merge_untested(self, other: MaxGeomSample) -> MaxGeomSample:
+    def union(self, other: MaxGeomSample) -> MaxGeomSample:
         """Merge another MaxGeomSample into this one and return a new MaxGeomSample."""
         if not isinstance(other, MaxGeomSample):
             raise ValueError("Can only merge with another MaxGeomSample")
@@ -232,7 +232,7 @@ class MaxGeomSample:
         return merged
 
     
-    def cosine_similarity_untested(self, other: MaxGeomSample) -> float:
+    def cosine_similarity(self, other: MaxGeomSample) -> float:
         """Compute Cosine similarity between two samples."""
         if not isinstance(other, MaxGeomSample):
             raise ValueError("Can only compute Cosine similarity with another MaxGeomSample")
@@ -267,3 +267,7 @@ class MaxGeomSample:
 
         return dot_product / ((self_norm_sq ** 0.5) * (other_norm_sq ** 0.5))
     
+
+    def sample_size(self) -> int:
+        """Return the total number of unique items in the sample across all buckets."""
+        return sum(len(bucket) for bucket in self._buckets.values())
