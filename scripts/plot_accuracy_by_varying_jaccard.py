@@ -43,4 +43,10 @@ if __name__ == "__main__":
     plt.close()
     
     print("Plot saved to: ", output_file )
+
+    # now calculate the R^2 value for each method and parameter
+    for k in k_values_tested:
+        subset = df[df['k'] == k]
+        r2 = np.corrcoef(subset['True_Jaccard'], subset['Estimated_Jaccard'])[0, 1] ** 2
+        print(f'R^2 for MaxGeomHash (k={k}): {r2:.4f}')
     

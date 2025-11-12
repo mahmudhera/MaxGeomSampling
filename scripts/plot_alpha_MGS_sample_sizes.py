@@ -66,9 +66,51 @@ def plot_growth_against_multiple_alpha(data_filename, output_filename):
     plt.tight_layout()
     plt.savefig(output_filename)
     plt.close()
+
+
+def plot_growth_against_multiple_alpha_stddev(data_filename, output_filename):
+    df = pd.read_csv(data_filename, sep='\t', index_col=False)
+
+    # filter by set_size % 10^5 == 0
+    df = df[df['set_size'] % 100000 == 0]
+
+    plt.figure(figsize=(4, 3))
+    
+    # set fontsize to 10
+    plt.rcParams.update({'font.size': 10})
+
+    # column names: set_size	amgs_sample_size_avg_alpha_0.25	amgs_sample_size_stddev_alpha_0.25	amgs_sample_size_avg_alpha_0.5	amgs_sample_size_stddev_alpha_0.5	amgs_sample_size_avg_alpha_0.75	amgs_sample_size_stddev_alpha_0.75
+    # need to plot sample sizes for different k values against set_size with error bars as shaded region using stddev
+
+    #alpha_values = [0.3, 0.4, 0.5]
+    alpha_values = [0.4, 0.45, 0.5]
+    colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6'][4:7]
+    markers = ['D', 'o', '<', '>', '^', 'v', '*', 'P', 'X'][4:7]
+
+    for alpha, color, marker in zip(alpha_values, colors, markers):
+        stddev_col = f'amgs_sample_size_stddev_alpha_{alpha}'
+        plt.plot(df['set_size'], df[stddev_col], label=f'α={alpha}', color=color, marker=marker, markersize=4)
+
+    # plot theoretical line: y = n^alpha for each alpha
+    for alpha, color, marker in zip(alpha_values, colors, markers):
+        theoretical_stddev = (df['set_size'] ** alpha) ** 0.5
+        plt.plot(df['set_size'], theoretical_stddev, linestyle='--', color=color, linewidth=0.75, label=f'sqrt(n^α), α={alpha}', marker=marker, markersize=4)
+
+    plt.xlabel('Original set size')
+    plt.ylabel('Stddev of $α$-MGH sample sizes')
+    #plt.title('Growth of $α$-MGS Samples Against Set Size for Different $α$ Values')
+    plt.legend(fontsize=8)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(output_filename)
+    plt.close()
     
     
 if __name__ == "__main__":
     input_file = os.path.join('results', 'results_growth_of_amgs_varying_alpha')
     output_file = os.path.join('plots', 'growth_of_alpha_mgs_samples.pdf')
     plot_growth_against_multiple_alpha(input_file, output_file)
+
+    input_file_stddev = os.path.join('results', 'results_growth_of_amgs_varying_alpha')
+    output_file_stddev = os.path.join('plots', 'growth_stddev_of_alpha_mgs_samples.pdf')
+    plot_growth_against_multiple_alpha_stddev(input_file_stddev, output_file_stddev)

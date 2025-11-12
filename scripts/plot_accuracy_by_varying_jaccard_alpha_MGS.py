@@ -20,7 +20,7 @@ if __name__ == "__main__":
     color_idx = 0
     for alpha in alpha_values_tested:
         subset = df[df['alpha'] == alpha]
-        plt.scatter(subset['True_Jaccard'], subset['Estimated_Jaccard'], label=f'α-MaxGeomHash (α={alpha})', color=colors[color_idx], alpha=0.3, s=10)
+        plt.scatter(subset['True_Jaccard'], subset['Estimated_Jaccard'], label=f'α-MaxGeomHash (α={alpha})', color=colors[color_idx], alpha=0.5, s=10, marker=markers[color_idx])
         color_idx += 1
     
     # plot a diagonal line y=x
@@ -44,3 +44,8 @@ if __name__ == "__main__":
     
     print("Plot saved to: ", output_file )
     
+    # now calculate the R^2 value for each method and parameter
+    for alpha in alpha_values_tested:
+        subset = df[df['alpha'] == alpha]
+        r2 = np.corrcoef(subset['True_Jaccard'], subset['Estimated_Jaccard'])[0, 1] ** 2
+        print(f'R^2 for α-MaxGeomHash (α={alpha}): {r2:.4f}')

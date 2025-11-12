@@ -143,7 +143,7 @@ cd ..
 
 # sketch commands (manually record CPU time, peak memory usage, and disk space for the sketch files)
 # all sketch files are created in data
-/usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo maxgeom --k 80
+/usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo maxgeom --k 90
 /usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo fracminhash --scale 0.001
 /usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo alphamaxgeom --alpha 0.45
 /usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo bottomk --k 1000
