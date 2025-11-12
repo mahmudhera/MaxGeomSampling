@@ -34,7 +34,7 @@ def plot_growth_against_multiple_k(data_filename, output_filename):
     for k, color, marker in zip(k_values, colors, markers):
         avg_col = f'mgs_sample_size_avg_k_{k}'
         stddev_col = f'mgs_sample_size_stddev_k_{k}'
-        plt.plot(df['set_size'], df[avg_col], label=f'k={k}', color=color, marker=marker, markersize=4)
+        plt.plot(df['set_size'], df[avg_col], label=f'$b$={k}', color=color, marker=marker, markersize=4)
         plt.fill_between(df['set_size'], 
                          df[avg_col] - df[stddev_col], 
                          df[avg_col] + df[stddev_col], 
@@ -96,7 +96,3 @@ if __name__ == "__main__":
     data_file_k = os.path.join('results', 'results_growth_of_mgs_varying_k')
     output_file_k = os.path.join('plots', 'growth_against_multiple_k.pdf')
     plot_growth_against_multiple_k(data_file_k, output_file_k)
-
-    data_file_k_stddev = os.path.join('results', 'results_growth_of_mgs_varying_k')
-    output_file_k_stddev = os.path.join('plots', 'growth_stddev_against_multiple_k.pdf')
-    plot_growth_against_multiple_k_stddev(data_file_k_stddev, output_file_k_stddev)
