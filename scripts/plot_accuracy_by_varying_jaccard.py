@@ -20,7 +20,7 @@ if __name__ == "__main__":
     color_idx = 0
     for k in k_values_tested:
         subset = df[df['k'] == k]
-        plt.scatter(subset['True_Jaccard'], subset['Estimated_Jaccard'], label=f'MaxGeomHash (k={k})', color=colors[color_idx], alpha=0.3, s=10, marker=markers[color_idx])
+        plt.scatter(subset['True_Jaccard'], subset['Estimated_Jaccard'], label=f'MaxGeomHash ($b$={k})', color=colors[color_idx], alpha=0.3, s=10, marker=markers[color_idx])
         color_idx += 1
     
     # plot a diagonal line y=x
@@ -48,5 +48,5 @@ if __name__ == "__main__":
     for k in k_values_tested:
         subset = df[df['k'] == k]
         r2 = np.corrcoef(subset['True_Jaccard'], subset['Estimated_Jaccard'])[0, 1] ** 2
-        print(f'R^2 for MaxGeomHash (k={k}): {r2:.4f}')
+        print(f'R^2 for MaxGeomHash (b={k}): {r2:.4f}')
     
