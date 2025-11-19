@@ -1,4 +1,4 @@
-# MaxGeomSampling
+# MaxGeomHash
 
 This repository contains the code to recreate all results presented in the manuscript, submitted to RECOMB-2026 for review. Installation for Python environment is through conda and pip. The C++ implementation needs to be downloaded and built separately, and the path to the bin folder needs to be added in the PATH variable. To install the C++ implementation, use the instructions available here: https://github.com/mahmudhera/kmer-sketch.
 
