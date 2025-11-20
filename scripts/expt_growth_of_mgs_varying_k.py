@@ -5,18 +5,21 @@ by varying the parameter k.
 
 import random
 from samplers import MaxGeomSample
-from helpers.string_utils import generate_random_strings
 from tqdm import tqdm
+import string
+
+def generate_random_strings(num_strings: int, length: int) -> list:
+    alphabet = string.ascii_letters + string.digits
+    return [''.join(random.choices(alphabet, k=length)) for _ in range(num_strings)]
 
 if __name__ == "__main__":
-    random.seed(42)
-    num_runs_each_setting = 50
+    num_runs_each_setting = 100
     w = 64
     #k_values = [25, 50, 100, 200, 400, 800]
-    k_values = [70, 80, 90, 100]
+    k_values = [100]
 
     # generate data sizes
-    data_sizes = [i for i in range(10000, 1000001, 10000)]
+    data_sizes = [10000, 20000, 30000, 40000]
 
     # vary size of data from 10K to 1M in steps of 10K
     data_size_to_avg_maxgeom_sample_size_per_k = {k: {} for k in k_values}

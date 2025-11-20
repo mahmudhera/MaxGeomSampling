@@ -256,6 +256,8 @@ def main():
     if 'bottomk' in args.in_path:
         # set xlim to 0.12
         ax.set_xlim(right=0.14)
+    elif 'maxgeom_k_80' in args.in_path:
+        ax.set_xlim(right=0.15)
     else:
         ax.set_xlim(right=0.16)
     plt.tight_layout()

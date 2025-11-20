@@ -13,14 +13,16 @@ if __name__ == "__main__":
     # plot true jaccard vs estimated jaccard for each method and parameter
     # method names: MGS, alpha-MGS. each method has four parameters
     alpha_values_tested = [0.4, 0.45, 0.5]
-    colors = ['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6'][4:7]
-    markers = ['D', 'o', '<', '>', '^', 'v', '*', 'P', 'X'][4:7]
+    colors = ['#a6cee3','#b2df8a', '#1f78b4', '#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#ab93b7']
+    markers = ['D', '<', 'o', '>', '^', 'v', '*', 'P', 'X']
+    colors = colors[4:7]
+    markers = markers[4:7]
 
     plt.figure(figsize=(4, 3))
     color_idx = 0
     for alpha in alpha_values_tested:
         subset = df[df['alpha'] == alpha]
-        plt.scatter(subset['True_Jaccard'], subset['Estimated_Jaccard'], label=f'α-MaxGeomHash (α={alpha})', color=colors[color_idx], alpha=0.3, s=10)
+        plt.scatter(subset['True_Jaccard'], subset['Estimated_Jaccard'], label=f'α-MaxGeomHash (α={alpha})', color=colors[color_idx], alpha=0.5, s=10, marker=markers[color_idx])
         color_idx += 1
     
     # plot a diagonal line y=x
@@ -44,3 +46,8 @@ if __name__ == "__main__":
     
     print("Plot saved to: ", output_file )
     
+    # now calculate the R^2 value for each method and parameter
+    for alpha in alpha_values_tested:
+        subset = df[df['alpha'] == alpha]
+        r2 = np.corrcoef(subset['True_Jaccard'], subset['Estimated_Jaccard'])[0, 1] ** 2
+        print(f'R^2 for α-MaxGeomHash (α={alpha}): {r2:.4f}')

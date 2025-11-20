@@ -1,12 +1,4 @@
-conda create -n maxgeom -y
-conda activate maxgeom
-pip install --file requirements.txt
-
-export PYTHONPATH=$(pwd):$PYTHONPATH
-
-# install kmer-sketch program, c++ implementation of MGS
-# follow instructions on GitHub, add binary location to PATH
-export PATH=/scratch/mbr5797/kmer-sketch/bin:$PATH
+#export PATH=/scratch/mbr5797/kmer-sketch/bin:$PATH
 
 # basic implementation test
 python scripts/expt_basic_implementation.py
@@ -25,12 +17,6 @@ python scripts/expt_growth_of_amgs_varying_alpha.py > results/results_growth_of_
 
 # plot alpha-MGS results
 python scripts/plot_alpha_MGS_sample_sizes.py
-
-# experiment for accuracy of jaccard estimation without refining
-#python scripts/expt_accuracy_no_refining.py
-
-# plot accuracy results
-#python scripts/plot_accuracy_jaccard_no_refining.py
 
 # experiment for accuracy of jaccard estimation with refining
 python scripts/expt_accuracy_with_refining.py
@@ -143,7 +129,7 @@ cd ..
 
 # sketch commands (manually record CPU time, peak memory usage, and disk space for the sketch files)
 # all sketch files are created in data
-/usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo maxgeom --k 80
+/usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo maxgeom --k 90
 /usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo fracminhash --scale 0.001
 /usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo alphamaxgeom --alpha 0.45
 /usr/bin/time -v python scripts/parallel_sketch.py data/genome_list --threads 10 --algo bottomk --k 1000
@@ -168,14 +154,11 @@ python scripts/analyze_pw_similarity_scores.py --in results/pw_jaccard_bottomk.c
 
 # trees are to be beautified using Illustrator later
 
-
-
-
-
-
 # only the plotting commands
 python scripts/plot_sample_sizes.py 
 python scripts/plot_alpha_MGS_sample_sizes.py
 python scripts/plot_accuracy_by_varying_jaccard.py
 python scripts/plot_accuracy_by_varying_jaccard_alpha_MGS.py
-python scripts/plot_fixed_t_results.py --t 0.5 --alpha 0.45 --k_mgh 80 --scale 0.001 --k_mh 1000 --metric jaccard
+python scripts/plot_fixed_t_results.py --t 0.5 --alpha 0.45 --k_mgh 90 --scale 0.001 --k_mh 1000 --metric jaccard
+
+# these images are later stitched and labeled using Illustrator
