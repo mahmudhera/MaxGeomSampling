@@ -2,3 +2,4 @@ from .fracminhash.FracMinHash import FracMinHashSketch
 from .maxgeomsampling.MaxGeomSampling import MaxGeomSample
 from .alphamaxgeomsampling.AlphaMaxGeomSampling import AlphaMaxGeomSample
 from .minhash.MinHash import MinHashSketch
+from .affirmativesampling.AffirmativeSampling import AffirmativeSketch
