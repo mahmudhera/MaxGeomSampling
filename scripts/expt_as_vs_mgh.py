@@ -49,9 +49,9 @@ def expt_permutation_test_as_vs_mgh():
     # experiment parameters
     w = 64
     k = 70
-    num_runs = 20
+    num_runs = 100
     num_pairs = 20
-    set_size = 10000
+    set_size = 100000
     t = 0.5
     seed = 42
 
@@ -136,9 +136,9 @@ def expt_permutation_test_alpha_as_vs_alpha_mgh():
     # experiment parameters
     w = 64
     alpha = 0.4
-    num_runs = 20
+    num_runs = 100
     num_pairs = 20
-    set_size = 10000
+    set_size = 100000
     t = 0.5
     seed = 42
 
