@@ -61,8 +61,8 @@ def expt_permutation_test_as_vs_mgh():
     # create a random number generator
     rng = random.Random(seed)
 
-    f_permute = open("as_vs_mgh_plain_varying_perm.txt", "w")
-    f_seed = open("as_vs_mgh_plain_varying_seed.txt", "w")
+    f_permute = open("results/as_vs_mgh_plain_varying_perm.txt", "w")
+    f_seed = open("results/as_vs_mgh_plain_varying_seed.txt", "w")
     f_permute.write("parameter_k,pair_id,permute_id,seed,A_size,B_size,as_sketch_size_A,as_sketch_size_B,mgh_sketch_size_A,mgh_sketch_size_B,true_jaccard,jaccard_as,jaccard_mgh\n")
     f_seed.write("parameter_k,pair_id,seed,A_size,B_size,as_sketch_size_A,as_sketch_size_B,mgh_sketch_size_A,mgh_sketch_size_B,true_jaccard,jaccard_as,jaccard_mgh\n")
 
@@ -148,8 +148,8 @@ def expt_permutation_test_alpha_as_vs_alpha_mgh():
     # create a random number generator
     rng = random.Random(seed)
 
-    f_permute = open("alpha_as_vs_alpha_mgh_varying_perm.txt", "w")
-    f_seed = open("alpha_as_vs_alpha_mgh_varying_seed.txt", "w")
+    f_permute = open("results/alpha_as_vs_alpha_mgh_varying_perm.txt", "w")
+    f_seed = open("results/alpha_as_vs_alpha_mgh_varying_seed.txt", "w")
     f_permute.write("parameter_alpha,pair_id,permute_id,seed,A_size,B_size,as_sketch_size_A,as_sketch_size_B,mgh_sketch_size_A,mgh_sketch_size_B,true_jaccard,jaccard_as,jaccard_mgh\n")
     f_seed.write("parameter_alpha,pair_id,seed,A_size,B_size,as_sketch_size_A,as_sketch_size_B,mgh_sketch_size_A,mgh_sketch_size_B,true_jaccard,jaccard_as,jaccard_mgh\n")
 
