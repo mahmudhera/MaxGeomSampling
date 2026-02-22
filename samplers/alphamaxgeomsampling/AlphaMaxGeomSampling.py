@@ -128,6 +128,10 @@ class AlphaMaxGeomSample:
         """Return the contents of bucket i as (item, hprime, freq), sorted by h' descending."""
         return self.sample().get(i, [])
 
+    def size(self) -> int:
+        """Return the total number of unique items in the sample across all buckets."""
+        return sum(len(bucket) for bucket in self._buckets.values())
+
     # ---------- Internals ----------
 
     def _evict_smallest(self, i: int) -> None:
@@ -192,6 +196,12 @@ class AlphaMaxGeomSample:
         if not isinstance(other, AlphaMaxGeomSample):
             return False
         return self.alpha == other.alpha and self.w == other.w and self.sample() == other.sample()
+
+
+    def jaccard(self, other: AlphaMaxGeomSample) -> float:
+        """Compute Jaccard similarity between two samples."""
+        return self.jaccard_index(other)
+    
 
     def jaccard_index(self, other: AlphaMaxGeomSample) -> float:
         """Compute Jaccard index between two samples."""
