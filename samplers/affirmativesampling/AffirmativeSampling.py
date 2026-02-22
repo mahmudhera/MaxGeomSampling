@@ -44,6 +44,10 @@ class AffirmativeSketch:
 
     # ---------------- Public API ----------------
 
+    def size(self) -> int:
+        """Return the number of stored unique hashes (size of sketch)."""
+        return len(self._data)
+
     def get(self) -> List[int]:
         """Return the sketch values as a sorted (ascending) list."""
         return list(self._data)
