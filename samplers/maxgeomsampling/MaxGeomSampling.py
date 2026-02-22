@@ -157,6 +157,10 @@ class MaxGeomSample:
 
     # ---------- Convenience ----------
 
+    def size(self) -> int:
+        """Return the total number of unique items in the sample across all buckets."""
+        return sum(len(bucket) for bucket in self._buckets.values())
+
     def __len__(self) -> int:
         """Total number of stored items across all buckets."""
         return sum(len(bucket) for bucket in self._buckets.values())
@@ -175,6 +179,9 @@ class MaxGeomSample:
             return False
         return self.k == other.k and self.w == other.w and self.sample() == other.sample()
     
+    def jaccard(self, other: MaxGeomSample) -> float:
+        return self.jaccard_index(other)
+
     def jaccard_index(self, other: MaxGeomSample) -> float:
         """Compute Jaccard index between two samples."""
         if not isinstance(other, MaxGeomSample):
