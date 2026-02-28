@@ -42,11 +42,11 @@ if __name__ == "__main__":
 
     with ProcessPoolExecutor(max_workers=num_processes) as executor:
         futures = []
-        for data_size in tqdm(data_sizes):
+        for data_size in data_sizes:
             for alpha in alpha_values:
                 futures.append(executor.submit(run_experiment_for_one_alpha_and_size, alpha, data_size, num_runs_each_setting, w))
 
-        for future in futures:
+        for future in tqdm(futures):
             alpha, data_size, avg_maxgeom_sample_size, stddev_maxgeom_sample_size = future.result()
             data_size_to_avg_maxgeom_sample_size_per_alpha[alpha][data_size] = avg_maxgeom_sample_size
             data_size_to_stddev_maxgeom_sample_size_per_alpha[alpha][data_size] = stddev_maxgeom_sample_size
