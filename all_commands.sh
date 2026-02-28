@@ -168,3 +168,11 @@ python scripts/plot_accuracy_by_varying_jaccard_alpha_MGS.py
 python scripts/plot_fixed_t_results.py --t 0.5 --alpha 0.45 --k_mgh 90 --scale 0.001 --k_mh 1000 --metric jaccard
 
 # these images are later stitched and labeled using Illustrator
+
+
+
+
+######################################
+# experiments after RECOMB reviews
+######################################
+python scripts/expt_growth_of_as_varying_k.py > results/results_growth_of_as_varying_k
