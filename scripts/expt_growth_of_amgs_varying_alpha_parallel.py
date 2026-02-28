@@ -27,14 +27,16 @@ def run_experiment_for_one_alpha_and_size(alpha, data_size, num_runs_each_settin
 
 if __name__ == "__main__":
     random.seed(42)
-    num_runs_each_setting = 50
+    num_runs_each_setting = 100
     w = 64
-    num_processes = 16
+    num_processes = 32
     #alpha_values = [0.25, 0.3, 0.4, 0.5]
     alpha_values = [0.25, 0.4, 0.5, 0.6, 0.75]
 
     # generate data sizes
-    data_sizes = [i for i in range(10000, 1000001, 1000)]
+    data_sizes = [i for i in range(10000, 1000001, 500)]
+    # reverse data sizes to start with larger sizes first 
+    data_sizes.reverse()
 
     # vary size of data from 10K to 1M in steps of 10K
     data_size_to_avg_maxgeom_sample_size_per_alpha = {alpha: {} for alpha in alpha_values}
