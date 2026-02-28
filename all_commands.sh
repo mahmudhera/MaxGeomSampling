@@ -176,3 +176,16 @@ python scripts/plot_fixed_t_results.py --t 0.5 --alpha 0.45 --k_mgh 90 --scale 0
 # experiments after RECOMB reviews
 ######################################
 python scripts/expt_growth_of_as_varying_k.py > results/results_growth_of_as_varying_k
+
+
+
+
+
+
+
+
+
+#########################################
+# experiments for AoA paper
+#########################################
+python scripts/expt_growth_of_amgs_varying_alpha_parallel.py > results/results_growth_of_amgs_varying_alpha_fine_grained
