@@ -20,7 +20,7 @@ def run_experiment_for_one_k_and_size(k, data_size, num_runs_each_setting, w):
     data = generate_random_strings(data_size, 10)
     maxgeom_sample_sizes = []
     for seed in range(num_runs_each_setting):
-        maxgeom_sample = MaxGeomSample(k=k, w=w, seed=seed)
+        max_geom_sample = MaxGeomSample(k=k, w=w, seed=seed)
         max_geom_sample.add_many_items(data)
         maxgeom_sample_sizes.append(len(max_geom_sample))
     avg_maxgeom_sample_size = sum(maxgeom_sample_sizes) / num_runs_each_setting
