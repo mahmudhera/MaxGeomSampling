@@ -186,6 +186,8 @@ python scripts/expt_growth_of_as_varying_k.py > results/results_growth_of_as_var
 
 
 #########################################
-# experiments for AoA paper
+# experiments for AoA/SISAP paper
 #########################################
 python scripts/expt_growth_of_amgs_varying_alpha_parallel.py > results/results_growth_of_amgs_varying_alpha_fine_grained
+
+python scripts/expt_growth_of_mgs_varying_k_parallel.py > results/results_growth_of_mgs_varying_k_fine_grained
