@@ -191,3 +191,15 @@ python scripts/expt_growth_of_as_varying_k.py > results/results_growth_of_as_var
 python scripts/expt_growth_of_amgs_varying_alpha_parallel.py > results/results_growth_of_amgs_varying_alpha_fine_grained
 
 python scripts/expt_growth_of_mgs_varying_k_parallel.py > results/results_growth_of_mgs_varying_k_fine_grained
+
+
+
+
+# Genome Research reviews experiments
+# use 500 trials
+expt_growth --t 0.5 --metric containment --seeds 500 --steps 8 --growth x2 --out results/fixed_containment_expt_amgh_t0.5_a0.45 --algo alphamaxgeom --alpha 0.45 --base_n 50000 --size_multiplier 40
+expt_growth --t 0.5 --metric containment --seeds 500 --steps 8 --growth x2 --out results/fixed_containment_expt_mh_t0.5_k1000 --algo bottomk --k 1000 --base_n 50000 --size_multiplier 40
+expt_growth --t 0.5 --metric containment --seeds 500 --steps 8 --growth x2 --out results/fixed_containment_expt_mgh_t0.5_k90 --algo maxgeom --k 90 --base_n 50000 --size_multiplier 40
+expt_growth --t 0.5 --metric containment --seeds 500 --steps 8 --growth x2 --out results/fixed_containment_expt_fmh_t0.5_s0.001 --algo fracminhash --scale 0.001 --base_n 50000 --size_multiplier 40
+
+python scripts/plot_fixed_t_results.py --t 0.5 --alpha 0.45 --k_mgh 90 --scale 0.001 --k_mh 1000 --metric containment

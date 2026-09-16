@@ -11,7 +11,7 @@ def parse_arguments():
     parser.add_argument('--k_mgh', type=int, required=True, help='r value for MaxGeom.')
     parser.add_argument('--scale', type=float, required=True, help='Scale factor value for FMH.')
     parser.add_argument('--k_mh', type=int, required=True, help='k value for MinHash (num permutations).')
-    parser.add_argument('--metric', type=str, choices=['cosine', 'jaccard'], required=True, help='What similarity metric to consider.')
+    parser.add_argument('--metric', type=str, choices=['cosine', 'jaccard', 'containment'], required=True, help='What similarity metric to consider.')
     
     return parser.parse_args()
 
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     df_mgs = pd.read_csv(filename_mgs, sep="\t")
     df_amg = pd.read_csv(filename_amg, sep="\t")
     df_fmh = pd.read_csv(filename_fmh, sep="\t")
-    if metric == 'jaccard':
+    if metric == 'jaccard' or metric == 'containment':
         df_mh = pd.read_csv(filename_mh, sep="\t")
 
     # in each df, there is a column '|A|', 'mean_sample_size_A', 'mse'
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     maxgeom_color_index = 2
     alphamaxgeom_color_index = 5
 
-    if metric == 'jaccard':
+    if metric == 'jaccard' or metric == 'containment':
         sns.lineplot(data=df_mh, x='|A|', y='mean_sample_size_A', label=f'MinHash ($k$={k_mh})', marker=markers[8], color=colors[minhash_color_index])
     sns.lineplot(data=df_fmh, x='|A|', y='mean_sample_size_A', label=f'FracMinHash ($s$={scale})', marker=markers[7], color=colors[fracminhash_color_index])
     sns.lineplot(data=df_mgs, x='|A|', y='mean_sample_size_A', label=f'MaxGeomHash ($b$={k_mgh})', marker=markers[2], color=colors[maxgeom_color_index])
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     output_plot2 = f"plots/fixed_{metric}_vary_set_size_mse_t{t}.pdf"
     plt.figure(figsize=(4, 3))
     
-    if metric == 'jaccard':
+    if metric == 'jaccard' or metric == 'containment':
         sns.lineplot(data=df_mh, x='|A|', y='mse', label=f'MinHash ($k$={k_mh})', marker=markers[8], color=colors[minhash_color_index])
     sns.lineplot(data=df_fmh, x='|A|', y='mse', label=f'FracMinHash ($s$={scale})', marker=markers[7], color=colors[fracminhash_color_index])
     sns.lineplot(data=df_mgs, x='|A|', y='mse', label=f'MaxGeomHash ($b$={k_mgh})', marker=markers[2], color=colors[maxgeom_color_index])
