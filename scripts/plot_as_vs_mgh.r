@@ -2,6 +2,7 @@ library(readr)
 library(dplyr)
 library(ggplot2)
 library(tidyr)
+library(patchwork)
 
 angle = 40
 color_as = "forestgreen"
@@ -33,7 +34,7 @@ p1 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
   labs(
     x = "",
     y = "Sketch size",
-    title = "a. same seed,\nvarying order"
+    title = "A. same seed,\nvarying order"
   ) +
   scale_fill_manual(values = c(
     "as_sketch_size_A" = color_as,
@@ -44,7 +45,7 @@ p1 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
     "mgh_sketch_size_A" = color_mgh
   )) +
   scale_x_discrete(labels = c(
-    as_sketch_size_A = "AS\n(k = 70)",
+    as_sketch_size_A = "AS\n(k = 100)",
     mgh_sketch_size_A = "MGH\n(b = 70)"
   )) +
   theme(
@@ -81,7 +82,7 @@ p2 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
   labs(
     x = "",
     y = "",
-    title = "c. same order,\nvarying seed"
+    title = "C. same order,\nvarying seed"
   ) +
   scale_fill_manual(values = c(
     "as_sketch_size_A" = color_as,
@@ -92,7 +93,7 @@ p2 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
     "mgh_sketch_size_A" = color_mgh
   )) +
   scale_x_discrete(labels = c(
-    as_sketch_size_A = "AS\n(k = 70)",
+    as_sketch_size_A = "AS\n(k = 100)",
     mgh_sketch_size_A = "MGH\n(b = 70)"
   )) +
   theme(
@@ -128,7 +129,7 @@ p3 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
   labs(
     x = "",
     y = "",
-    title = "b. same seed,\nvarying order"
+    title = "B. same seed,\nvarying order"
   ) +
   scale_fill_manual(values = c(
     "as_sketch_size_A" = color_alpha_as,
@@ -139,7 +140,7 @@ p3 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
     "mgh_sketch_size_A" = color_alpha_mgh
   )) +
   scale_x_discrete(labels = c(
-    as_sketch_size_A = "a-AS\n(a = 0.4)",
+    as_sketch_size_A = "a-AS\n(a = 0.5)",
     mgh_sketch_size_A = "a-MGH\n(a = 0.4)"
   )) +
   theme(
@@ -175,7 +176,7 @@ p4 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
   labs(
     x = "",
     y = "",
-    title = "d. same order,\nvarying seed"
+    title = "D. same order,\nvarying seed"
   ) +
   scale_fill_manual(values = c(
     "as_sketch_size_A" = color_alpha_as,
@@ -186,7 +187,7 @@ p4 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
     "mgh_sketch_size_A" = color_alpha_mgh
   )) +
   scale_x_discrete(labels = c(
-    as_sketch_size_A = "a-AS\n(a = 0.4)",
+    as_sketch_size_A = "a-AS\n(a = 0.5)",
     mgh_sketch_size_A = "a-MGH\n(a = 0.4)"
   )) +
   theme(
@@ -224,7 +225,7 @@ p5 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
   labs(
     x = "",
     y = "Estimated Jaccard",
-    title = "e. estimated by\nvarying order"
+    title = "E. estimated by\nvarying order"
   ) +
   scale_fill_manual(values = c(
     "jaccard_as" = color_as,
@@ -235,7 +236,7 @@ p5 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
     "jaccard_mgh" = color_mgh
   )) +
   scale_x_discrete(labels = c(
-    jaccard_as = "AS\n(k = 70)",
+    jaccard_as = "AS\n(k = 100)",
     jaccard_mgh = "MGH\n(b = 70)"
   )) +
   theme(
@@ -272,7 +273,7 @@ p6 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
   labs(
     x = "",
     y = "",
-    title = "g. estimated by\nvarying seed"
+    title = "G. estimated by\nvarying seed"
   ) +
   scale_fill_manual(values = c(
     "jaccard_as" = color_as,
@@ -283,7 +284,7 @@ p6 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
     "jaccard_mgh" = color_mgh
   )) +
   scale_x_discrete(labels = c(
-    jaccard_as = "AS\n(k = 70)",
+    jaccard_as = "AS\n(k = 100)",
     jaccard_mgh = "MGH\n(b = 70)"
   )) +
   theme(
@@ -321,7 +322,7 @@ p7 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
   labs(
     x = "",
     y = "",
-    title = "f. estimated by\nvarying order"
+    title = "F. estimated by\nvarying order"
   ) +
   scale_fill_manual(values = c(
     "jaccard_as" = color_alpha_as,
@@ -332,7 +333,7 @@ p7 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
     "jaccard_mgh" = color_alpha_mgh
   )) +
   scale_x_discrete(labels = c(
-    jaccard_as = "a-AS\n(a = 0.4)",
+    jaccard_as = "a-AS\n(a = 0.5)",
     jaccard_mgh = "a-MGH\n(a = 0.4)"
   )) +
   theme(
@@ -370,7 +371,7 @@ p8 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
   labs(
     x = "",
     y = "",
-    title = "h. estimated by\nvarying seed"
+    title = "H. estimated by\nvarying seed"
   ) +
   scale_fill_manual(values = c(
     "jaccard_as" = color_alpha_as,
@@ -381,8 +382,8 @@ p8 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
     "jaccard_mgh" = color_alpha_mgh
   )) +
   scale_x_discrete(labels = c(
-    jaccard_as = "$\alpha$-MGH\n(alpha = 0.4)",
-    jaccard_mgh = "alpha-MGH\n(alpha = 0.4)"
+    jaccard_as = "a-AS\n(a = 0.5)",
+    jaccard_mgh = "a-MGH\n(a = 0.4)"
   )) +
   theme(
     plot.title = element_text(size = 10, hjust = 0.5),
