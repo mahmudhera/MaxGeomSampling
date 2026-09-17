@@ -10,6 +10,7 @@ import random
 import argparse
 import os
 import numpy as np
+from concurrent.futures import ProcessPoolExecutor
 
 
 
@@ -36,6 +37,100 @@ def synthesize_sets_jaccard(t, n, universal_pool, rng):
     return A, B
 
 
+def _run_pair_experiment(args):
+    """Run all permutation and seed trials for one pair in a worker process."""
+    pair_id, A, B, num_runs, sketch_kind = args
+    w = 64
+    rng = random.Random(42 + pair_id)
+    permutation_rows = []
+    seed_rows = []
+
+    if sketch_kind == "plain":
+        as_class = AffirmativeSketch
+        mgh_class = MaxGeomSample
+        as_kwargs = {"k": 100}
+        mgh_kwargs = {"k": 70, "w": w}
+    else:
+        parameter = 0.5
+        as_class = AlphaAffirmativeSketch
+        mgh_class = AlphaMaxGeomSample
+        as_kwargs = {"alpha": parameter}
+        mgh_kwargs = {"alpha": 0.4, "w": w}
+
+    for permute_id in range(num_runs):
+        A_perm = list(A)
+        B_perm = list(B)
+        rng.shuffle(A_perm)
+        rng.shuffle(B_perm)
+
+        as_sketch_A = as_class(seed=42, **as_kwargs)
+        as_sketch_B = as_class(seed=42, **as_kwargs)
+        mgh_sketch_A = mgh_class(seed=42, **mgh_kwargs)
+        mgh_sketch_B = mgh_class(seed=42, **mgh_kwargs)
+        as_sketch_A.add_many_items(A_perm)
+        mgh_sketch_A.add_many_items(A_perm)
+        as_sketch_B.add_many_items(B_perm)
+        mgh_sketch_B.add_many_items(B_perm)
+
+        permutation_rows.append(
+            (pair_id, permute_id, 42, len(A), len(B), as_sketch_A.size(),
+             as_sketch_B.size(), mgh_sketch_A.size(), mgh_sketch_B.size(),
+             as_sketch_A.jaccard(as_sketch_B), mgh_sketch_A.jaccard(mgh_sketch_B))
+        )
+
+    for seed_id in range(num_runs):
+        as_sketch_A = as_class(seed=seed_id, **as_kwargs)
+        as_sketch_B = as_class(seed=seed_id, **as_kwargs)
+        mgh_sketch_A = mgh_class(seed=seed_id, **mgh_kwargs)
+        mgh_sketch_B = mgh_class(seed=seed_id, **mgh_kwargs)
+        as_sketch_A.add_many_items(A)
+        mgh_sketch_A.add_many_items(A)
+        as_sketch_B.add_many_items(B)
+        mgh_sketch_B.add_many_items(B)
+
+        seed_rows.append(
+            (pair_id, seed_id, len(A), len(B), as_sketch_A.size(),
+             as_sketch_B.size(), mgh_sketch_A.size(), mgh_sketch_B.size(),
+             as_sketch_A.jaccard(as_sketch_B), mgh_sketch_A.jaccard(mgh_sketch_B))
+        )
+
+    return permutation_rows, seed_rows
+
+
+def _run_experiment(sketch_kind, permutation_path, seed_path):
+    w = 64
+    num_runs = 100
+    num_pairs = 20
+    set_size = 100000
+    t = 0.5
+    universal_pool = generate_random_strings(3000000, 10)
+    rng = random.Random(42)
+    jobs = []
+    for pair_id in range(num_pairs):
+        A, B = synthesize_sets_jaccard(t, set_size, universal_pool, rng)
+        jobs.append((pair_id, list(A), list(B), num_runs, sketch_kind))
+
+    parameter_name = "parameter_k" if sketch_kind == "plain" else "parameter_alpha"
+    parameter = 70 if sketch_kind == "plain" else 0.4
+    permutation_header = f"{parameter_name},pair_id,permute_id,seed,A_size,B_size,as_sketch_size_A,as_sketch_size_B,mgh_sketch_size_A,mgh_sketch_size_B,true_jaccard,jaccard_as,jaccard_mgh\n"
+    seed_header = f"{parameter_name},pair_id,seed,A_size,B_size,as_sketch_size_A,as_sketch_size_B,mgh_sketch_size_A,mgh_sketch_size_B,true_jaccard,jaccard_as,jaccard_mgh\n"
+
+    with open(permutation_path, "w") as f_permute, open(seed_path, "w") as f_seed:
+        f_permute.write(permutation_header)
+        f_seed.write(seed_header)
+        with ProcessPoolExecutor(max_workers=min(num_pairs, os.cpu_count() or 1)) as executor:
+            for permutation_rows, seed_rows in tqdm(
+                executor.map(_run_pair_experiment, jobs),
+                total=num_pairs,
+                desc="Pairs",
+                leave=False,
+            ):
+                for row in permutation_rows:
+                    f_permute.write(f"{parameter},{row[0]},{row[1]},{row[2]},{row[3]},{row[4]},{row[5]},{row[6]},{row[7]},{row[8]},{t},{row[9]},{row[10]}\n")
+                for row in seed_rows:
+                    f_seed.write(f"{parameter},{row[0]},{row[1]},{row[2]},{row[3]},{row[4]},{row[5]},{row[6]},{row[7]},{t},{row[8]},{row[9]}\n")
+
+
 
 def expt_permutation_test_as_vs_mgh():
     """
@@ -46,78 +141,7 @@ def expt_permutation_test_as_vs_mgh():
     Record the estimated Jaccard values
     Later, we can plot the distribution of estimated Jaccard values
     """
-    # experiment parameters
-    w = 64
-    k = 70
-    num_runs = 100
-    num_pairs = 20
-    set_size = 100000
-    t = 0.5
-    seed = 42
-
-    # create a universal pool of strings
-    universal_pool = generate_random_strings(3000000, 10)
-
-    # create a random number generator
-    rng = random.Random(seed)
-
-    f_permute = open("results/as_vs_mgh_plain_varying_perm.txt", "w")
-    f_seed = open("results/as_vs_mgh_plain_varying_seed.txt", "w")
-    f_permute.write("parameter_k,pair_id,permute_id,seed,A_size,B_size,as_sketch_size_A,as_sketch_size_B,mgh_sketch_size_A,mgh_sketch_size_B,true_jaccard,jaccard_as,jaccard_mgh\n")
-    f_seed.write("parameter_k,pair_id,seed,A_size,B_size,as_sketch_size_A,as_sketch_size_B,mgh_sketch_size_A,mgh_sketch_size_B,true_jaccard,jaccard_as,jaccard_mgh\n")
-
-    for pair_id in tqdm(range(num_pairs), desc="Pairs", leave=False):
-        # create two sets A and B with Jaccard similarity t
-        A, B = synthesize_sets_jaccard(t, set_size, universal_pool, rng)
-        A, B = list(A), list(B)
-
-        for permute_id in tqdm(range(num_runs), desc="Runs", leave=False):
-            # permute A and B
-            random.shuffle(A)
-            random.shuffle(B)
-            A_perm = list(A)
-            B_perm = list(B)
-
-            # compute AS and MGH sketches
-            as_sketch_A = AffirmativeSketch(k=k, seed=seed)
-            as_sketch_B = AffirmativeSketch(k=k, seed=seed)
-            mgh_sketch_A = MaxGeomSample(k=k, w=w, seed=seed)
-            mgh_sketch_B = MaxGeomSample(k=k, w=w, seed=seed)
-
-            as_sketch_A.add_many_items(A_perm)
-            mgh_sketch_A.add_many_items(A_perm)
-            as_sketch_B.add_many_items(B_perm)
-            mgh_sketch_B.add_many_items(B_perm)
-
-            # compute Jaccard similarity
-            jaccard_estimate_as = as_sketch_A.jaccard(as_sketch_B)
-            jaccard_estimate_mgh = mgh_sketch_A.jaccard(mgh_sketch_B)
-
-            f_permute.write(f"{k},{pair_id},{permute_id},{seed},{len(A)},{len(B)},{as_sketch_A.size()},{as_sketch_B.size()},{mgh_sketch_A.size()},{mgh_sketch_B.size()},{t},{jaccard_estimate_as},{jaccard_estimate_mgh}\n")
-
-        A_perm = list(A)
-        B_perm = list(B)
-
-        for seed_id in tqdm(range(num_runs), desc="Seeds", leave=False):
-            # create new sketches with different seeds
-            as_sketch_A = AffirmativeSketch(k=k, seed=seed_id)
-            as_sketch_B = AffirmativeSketch(k=k, seed=seed_id)
-            mgh_sketch_A = MaxGeomSample(k=k, w=w, seed=seed_id)
-            mgh_sketch_B = MaxGeomSample(k=k, w=w, seed=seed_id)
-
-            as_sketch_A.add_many_items(A_perm)
-            mgh_sketch_A.add_many_items(A_perm)
-            as_sketch_B.add_many_items(B_perm)
-            mgh_sketch_B.add_many_items(B_perm)
-
-            # compute Jaccard similarity
-            jaccard_estimate_as = as_sketch_A.jaccard(as_sketch_B)
-            jaccard_estimate_mgh = mgh_sketch_A.jaccard(mgh_sketch_B)
-
-            f_seed.write(f"{k},{pair_id},{seed_id},{len(A)},{len(B)},{as_sketch_A.size()},{as_sketch_B.size()},{mgh_sketch_A.size()},{mgh_sketch_B.size()},{t},{jaccard_estimate_as},{jaccard_estimate_mgh}\n")
-
-    f_permute.close()
-    f_seed.close()
+    _run_experiment("plain", "results/as_vs_mgh_plain_varying_perm.txt", "results/as_vs_mgh_plain_varying_seed.txt")
 
     print ("Results saved to\nas_vs_mgh_plain_varying_perm.txt,\nas_vs_mgh_plain_varying_seed.txt")
 
@@ -133,78 +157,7 @@ def expt_permutation_test_alpha_as_vs_alpha_mgh():
     Record the estimated Jaccard values
     Later, we can plot the distribution of estimated Jaccard values
     """
-    # experiment parameters
-    w = 64
-    alpha = 0.4
-    num_runs = 100
-    num_pairs = 20
-    set_size = 100000
-    t = 0.5
-    seed = 42
-
-    # create a universal pool of strings
-    universal_pool = generate_random_strings(3000000, 10)
-
-    # create a random number generator
-    rng = random.Random(seed)
-
-    f_permute = open("results/alpha_as_vs_alpha_mgh_varying_perm.txt", "w")
-    f_seed = open("results/alpha_as_vs_alpha_mgh_varying_seed.txt", "w")
-    f_permute.write("parameter_alpha,pair_id,permute_id,seed,A_size,B_size,as_sketch_size_A,as_sketch_size_B,mgh_sketch_size_A,mgh_sketch_size_B,true_jaccard,jaccard_as,jaccard_mgh\n")
-    f_seed.write("parameter_alpha,pair_id,seed,A_size,B_size,as_sketch_size_A,as_sketch_size_B,mgh_sketch_size_A,mgh_sketch_size_B,true_jaccard,jaccard_as,jaccard_mgh\n")
-
-    for pair_id in tqdm(range(num_pairs), desc="Pairs", leave=False):
-        # create two sets A and B with Jaccard similarity t
-        A, B = synthesize_sets_jaccard(t, set_size, universal_pool, rng)
-        A, B = list(A), list(B)
-
-        for permute_id in tqdm(range(num_runs), desc="Runs", leave=False):
-            # permute A and B
-            random.shuffle(A)
-            random.shuffle(B)
-            A_perm = list(A)
-            B_perm = list(B)
-
-            # compute AS and MGH sketches
-            as_sketch_A = AlphaAffirmativeSketch(alpha=alpha, seed=seed)
-            as_sketch_B = AlphaAffirmativeSketch(alpha=alpha, seed=seed)
-            mgh_sketch_A = AlphaMaxGeomSample(alpha=alpha, w=w, seed=seed)
-            mgh_sketch_B = AlphaMaxGeomSample(alpha=alpha, w=w, seed=seed)
-
-            as_sketch_A.add_many_items(A_perm)
-            mgh_sketch_A.add_many_items(A_perm)
-            as_sketch_B.add_many_items(B_perm)
-            mgh_sketch_B.add_many_items(B_perm)
-
-            # compute Jaccard similarity
-            jaccard_estimate_as = as_sketch_A.jaccard(as_sketch_B)
-            jaccard_estimate_mgh = mgh_sketch_A.jaccard(mgh_sketch_B)
-
-            f_permute.write(f"{alpha},{pair_id},{permute_id},{seed},{len(A)},{len(B)},{as_sketch_A.size()},{as_sketch_B.size()},{mgh_sketch_A.size()},{mgh_sketch_B.size()},{t},{jaccard_estimate_as},{jaccard_estimate_mgh}\n")
-
-        A_perm = list(A)
-        B_perm = list(B)
-
-        for seed_id in tqdm(range(num_runs), desc="Seeds", leave=False):
-            # create new sketches with different seeds
-            as_sketch_A = AlphaAffirmativeSketch(alpha=alpha, seed=seed_id)
-            as_sketch_B = AlphaAffirmativeSketch(alpha=alpha, seed=seed_id)
-            mgh_sketch_A = AlphaMaxGeomSample(alpha=alpha, w=w, seed=seed_id)
-            mgh_sketch_B = AlphaMaxGeomSample(alpha=alpha, w=w, seed=seed_id)
-
-            as_sketch_A.add_many_items(A_perm)
-            mgh_sketch_A.add_many_items(A_perm)
-            as_sketch_B.add_many_items(B_perm)
-            mgh_sketch_B.add_many_items(B_perm)
-
-            # compute Jaccard similarity
-            jaccard_estimate_as = as_sketch_A.jaccard(as_sketch_B)
-            jaccard_estimate_mgh = mgh_sketch_A.jaccard(mgh_sketch_B)
-
-            f_seed.write(f"{alpha},{pair_id},{seed_id},{len(A)},{len(B)},{as_sketch_A.size()},{as_sketch_B.size()},{mgh_sketch_A.size()},{mgh_sketch_B.size()},{t},{jaccard_estimate_as},{jaccard_estimate_mgh}\n")
-
-    f_permute.close()
-    f_seed.close()
+    _run_experiment("alpha", "results/alpha_as_vs_alpha_mgh_varying_perm.txt", "results/alpha_as_vs_alpha_mgh_varying_seed.txt")
 
     print ("Results saved to\nalpha_as_vs_alpha_mgh_varying_perm.txt,\nalpha_as_vs_alpha_mgh_varying_seed.txt")
 
