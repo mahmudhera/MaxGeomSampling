@@ -34,7 +34,7 @@ p1 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
   labs(
     x = "",
     y = "Sketch size",
-    title = "A. same seed,\nvarying order"
+    title = "A\nsame seed,\nvarying order"
   ) +
   scale_fill_manual(values = c(
     "as_sketch_size_A" = color_as,
@@ -82,7 +82,7 @@ p2 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
   labs(
     x = "",
     y = "",
-    title = "C. same order,\nvarying seed"
+    title = "C\nsame order,\nvarying seed"
   ) +
   scale_fill_manual(values = c(
     "as_sketch_size_A" = color_as,
@@ -129,7 +129,7 @@ p3 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
   labs(
     x = "",
     y = "",
-    title = "B. same seed,\nvarying order"
+    title = "B\nsame seed,\nvarying order"
   ) +
   scale_fill_manual(values = c(
     "as_sketch_size_A" = color_alpha_as,
@@ -176,7 +176,7 @@ p4 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
   labs(
     x = "",
     y = "",
-    title = "D. same order,\nvarying seed"
+    title = "D\nsame order,\nvarying seed"
   ) +
   scale_fill_manual(values = c(
     "as_sketch_size_A" = color_alpha_as,
@@ -225,7 +225,7 @@ p5 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
   labs(
     x = "",
     y = "Estimated Jaccard",
-    title = "E. estimated by\nvarying order"
+    title = "E\nestimated by\nvarying order"
   ) +
   scale_fill_manual(values = c(
     "jaccard_as" = color_as,
@@ -273,7 +273,7 @@ p6 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
   labs(
     x = "",
     y = "",
-    title = "G. estimated by\nvarying seed"
+    title = "G\nestimated by\nvarying seed"
   ) +
   scale_fill_manual(values = c(
     "jaccard_as" = color_as,
@@ -322,7 +322,7 @@ p7 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
   labs(
     x = "",
     y = "",
-    title = "F. estimated by\nvarying order"
+    title = "F\nestimated by\nvarying order"
   ) +
   scale_fill_manual(values = c(
     "jaccard_as" = color_alpha_as,
@@ -371,7 +371,7 @@ p8 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
   labs(
     x = "",
     y = "",
-    title = "H. estimated by\nvarying seed"
+    title = "H\nestimated by\nvarying seed"
   ) +
   scale_fill_manual(values = c(
     "jaccard_as" = color_alpha_as,
