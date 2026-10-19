@@ -1,0 +1,403 @@
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(patchwork)
+
+angle = 40
+color_as = "forestgreen"
+color_mgh = "dodgerblue1"
+color_alpha_as = "darkorange1"
+color_alpha_mgh = "blueviolet"
+
+
+# Read CSV
+df <- read_csv("results/as_vs_mgh_plain_varying_perm.txt")
+
+df_filtered <- df %>%
+  filter(pair_id == 4)
+
+# Convert to long format for plotting
+df_long <- df_filtered %>%
+  select(as_sketch_size_A, mgh_sketch_size_A) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "method",
+    values_to = "sketch_size"
+  )
+
+# Boxplot + jitter
+p1 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
+  geom_jitter(aes(color = method), width = 0.2, alpha = 0.7, size = 0.6) +
+  geom_boxplot(outlier.shape = NA, width = 0.5) +
+  theme_minimal() +
+  labs(
+    x = "",
+    y = "Sketch size",
+    title = "A\nsame seed,\nvarying order"
+  ) +
+  scale_fill_manual(values = c(
+    "as_sketch_size_A" = color_as,
+    "mgh_sketch_size_A" = color_mgh
+  )) +
+  scale_color_manual(values = c(
+    "as_sketch_size_A" = color_as,
+    "mgh_sketch_size_A" = color_mgh
+  )) +
+  scale_x_discrete(labels = c(
+    as_sketch_size_A = "AS\n(k = 100)",
+    mgh_sketch_size_A = "MGH\n(b = 70)"
+  )) +
+  theme(
+    plot.title = element_text(size = 10, hjust = 0.5),
+    axis.title = element_text(size = 10),
+    axis.text.x = element_text(size = 10, angle = angle, hjust = 0.5),
+    axis.text.y = element_text(size = 10),
+    legend.position = "none"
+  )
+
+
+
+
+# Read CSV
+df <- read_csv("results/as_vs_mgh_plain_varying_seed.txt")
+
+df_filtered <- df %>%
+  filter(pair_id == 4)
+
+# Convert to long format for plotting
+df_long <- df_filtered %>%
+  select(as_sketch_size_A, mgh_sketch_size_A) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "method",
+    values_to = "sketch_size"
+  )
+
+# Boxplot + jitter
+p2 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
+  geom_jitter(aes(color = method), width = 0.2, alpha = 0.7, size = 0.6) +
+  geom_boxplot(outlier.shape = NA, width = 0.5) +
+  theme_minimal() +
+  labs(
+    x = "",
+    y = "",
+    title = "C\nsame order,\nvarying seed"
+  ) +
+  scale_fill_manual(values = c(
+    "as_sketch_size_A" = color_as,
+    "mgh_sketch_size_A" = color_mgh
+  )) +
+  scale_color_manual(values = c(
+    "as_sketch_size_A" = color_as,
+    "mgh_sketch_size_A" = color_mgh
+  )) +
+  scale_x_discrete(labels = c(
+    as_sketch_size_A = "AS\n(k = 100)",
+    mgh_sketch_size_A = "MGH\n(b = 70)"
+  )) +
+  theme(
+    plot.title = element_text(size = 10, hjust = 0.5),
+    axis.title = element_text(size = 10),
+    axis.text.x = element_text(size = 10, angle = angle, hjust = 0.5),
+    axis.text.y = element_text(size = 10),
+    legend.position = "none"
+  )
+
+
+
+# Read CSV
+df <- read_csv("results/alpha_as_vs_alpha_mgh_varying_perm.txt")
+
+df_filtered <- df %>%
+  filter(pair_id == 4)
+
+# Convert to long format for plotting
+df_long <- df_filtered %>%
+  select(as_sketch_size_A, mgh_sketch_size_A) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "method",
+    values_to = "sketch_size"
+  )
+
+# Boxplot + jitter
+p3 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
+  geom_jitter(aes(color = method), width = 0.2, alpha = 0.7, size = 0.6) +
+  geom_boxplot(outlier.shape = NA, width = 0.5) +
+  theme_minimal() +
+  labs(
+    x = "",
+    y = "",
+    title = "B\nsame seed,\nvarying order"
+  ) +
+  scale_fill_manual(values = c(
+    "as_sketch_size_A" = color_alpha_as,
+    "mgh_sketch_size_A" = color_alpha_mgh
+  )) +
+  scale_color_manual(values = c(
+    "as_sketch_size_A" = color_alpha_as,
+    "mgh_sketch_size_A" = color_alpha_mgh
+  )) +
+  scale_x_discrete(labels = c(
+    as_sketch_size_A = "a-AS\n(a = 0.5)",
+    mgh_sketch_size_A = "a-MGH\n(a = 0.4)"
+  )) +
+  theme(
+    plot.title = element_text(size = 10, hjust = 0.5),
+    axis.title = element_text(size = 10),
+    axis.text.x = element_text(size = 10, angle = angle, hjust = 0.5),
+    axis.text.y = element_text(size = 10),
+    legend.position = "none"
+  )
+
+
+
+# Read CSV
+df <- read_csv("results/alpha_as_vs_alpha_mgh_varying_seed.txt")
+
+df_filtered <- df %>%
+  filter(pair_id == 4)
+
+# Convert to long format for plotting
+df_long <- df_filtered %>%
+  select(as_sketch_size_A, mgh_sketch_size_A) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "method",
+    values_to = "sketch_size"
+  )
+
+# Boxplot + jitter
+p4 <- ggplot(df_long, aes(x = method, y = sketch_size, fill = method)) +
+  geom_jitter(aes(color = method), width = 0.2, alpha = 0.7, size = 0.6) +
+  geom_boxplot(outlier.shape = NA, width = 0.5) +
+  theme_minimal() +
+  labs(
+    x = "",
+    y = "",
+    title = "D\nsame order,\nvarying seed"
+  ) +
+  scale_fill_manual(values = c(
+    "as_sketch_size_A" = color_alpha_as,
+    "mgh_sketch_size_A" = color_alpha_mgh
+  )) +
+  scale_color_manual(values = c(
+    "as_sketch_size_A" = color_alpha_as,
+    "mgh_sketch_size_A" = color_alpha_mgh
+  )) +
+  scale_x_discrete(labels = c(
+    as_sketch_size_A = "a-AS\n(a = 0.5)",
+    mgh_sketch_size_A = "a-MGH\n(a = 0.4)"
+  )) +
+  theme(
+    plot.title = element_text(size = 10, hjust = 0.5),
+    axis.title = element_text(size = 10),
+    axis.text.x = element_text(size = 10, angle = angle, hjust = 0.5),
+    axis.text.y = element_text(size = 10),
+    legend.position = "none"
+  )
+
+
+
+
+
+# Read CSV
+df <- read_csv("results/as_vs_mgh_plain_varying_perm.txt")
+
+df_filtered <- df %>%
+  filter(pair_id == 4)
+
+df_long <- df_filtered %>%
+  select(jaccard_as, jaccard_mgh) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "method",
+    values_to = "jaccard"
+  )
+
+
+# Boxplot + jitter
+p5 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
+  geom_violin(outlier.shape = NA, width = 0.8) +
+  geom_jitter(width = 0.2, alpha = 0.1, size = 0.5, color='black') +
+  theme_minimal() +
+  labs(
+    x = "",
+    y = "Estimated Jaccard",
+    title = "E\nestimated by\nvarying order"
+  ) +
+  scale_fill_manual(values = c(
+    "jaccard_as" = color_as,
+    "jaccard_mgh" = color_mgh
+  )) +
+  scale_color_manual(values = c(
+    "jaccard_as" = color_as,
+    "jaccard_mgh" = color_mgh
+  )) +
+  scale_x_discrete(labels = c(
+    jaccard_as = "AS\n(k = 100)",
+    jaccard_mgh = "MGH\n(b = 70)"
+  )) +
+  theme(
+    plot.title = element_text(size = 10, hjust = 0.5),
+    axis.title = element_text(size = 10),
+    axis.text.x = element_text(size = 10, angle = angle, hjust = 0.5),
+    axis.text.y = element_text(size = 10),
+    legend.position = "none"
+  )
+
+
+
+
+# Read CSV
+df <- read_csv("results/as_vs_mgh_plain_varying_seed.txt")
+
+df_filtered <- df %>%
+  filter(pair_id == 4)
+
+df_long <- df_filtered %>%
+  select(jaccard_as, jaccard_mgh) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "method",
+    values_to = "jaccard"
+  )
+
+
+# Boxplot + jitter
+p6 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
+  geom_violin(outlier.shape = NA, width = 0.8) +
+  geom_jitter(width = 0.2, alpha = 0.1, size = 0.5, color='black') +
+  theme_minimal() +
+  labs(
+    x = "",
+    y = "",
+    title = "G\nestimated by\nvarying seed"
+  ) +
+  scale_fill_manual(values = c(
+    "jaccard_as" = color_as,
+    "jaccard_mgh" = color_mgh
+  )) +
+  scale_color_manual(values = c(
+    "jaccard_as" = color_as,
+    "jaccard_mgh" = color_mgh
+  )) +
+  scale_x_discrete(labels = c(
+    jaccard_as = "AS\n(k = 100)",
+    jaccard_mgh = "MGH\n(b = 70)"
+  )) +
+  theme(
+    plot.title = element_text(size = 10, hjust = 0.5),
+    axis.title = element_text(size = 10),
+    axis.text.x = element_text(size = 10, angle = angle, hjust = 0.5),
+    axis.text.y = element_text(size = 10),
+    legend.position = "none"
+  )
+
+
+
+
+
+# Read CSV
+df <- read_csv("results/alpha_as_vs_alpha_mgh_varying_perm.txt")
+
+df_filtered <- df %>%
+  filter(pair_id == 4)
+
+df_long <- df_filtered %>%
+  select(jaccard_as, jaccard_mgh) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "method",
+    values_to = "jaccard"
+  )
+
+
+# Boxplot + jitter
+p7 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
+  geom_violin(outlier.shape = NA, width = 0.8) +
+  geom_jitter(width = 0.2, alpha = 0.1, size = 0.5, color='black') +
+  theme_minimal() +
+  labs(
+    x = "",
+    y = "",
+    title = "F\nestimated by\nvarying order"
+  ) +
+  scale_fill_manual(values = c(
+    "jaccard_as" = color_alpha_as,
+    "jaccard_mgh" = color_alpha_mgh
+  )) +
+  scale_color_manual(values = c(
+    "jaccard_as" = color_alpha_as,
+    "jaccard_mgh" = color_alpha_mgh
+  )) +
+  scale_x_discrete(labels = c(
+    jaccard_as = "a-AS\n(a = 0.5)",
+    jaccard_mgh = "a-MGH\n(a = 0.4)"
+  )) +
+  theme(
+    plot.title = element_text(size = 10, hjust = 0.5),
+    axis.title = element_text(size = 10),
+    axis.text.x = element_text(size = 10, angle = angle, hjust = 0.5),
+    axis.text.y = element_text(size = 10),
+    legend.position = "none"
+  )
+
+
+
+
+
+# Read CSV
+df <- read_csv("results/alpha_as_vs_alpha_mgh_varying_seed.txt")
+
+df_filtered <- df %>%
+  filter(pair_id == 4)
+
+df_long <- df_filtered %>%
+  select(jaccard_as, jaccard_mgh) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "method",
+    values_to = "jaccard"
+  )
+
+
+# Boxplot + jitter
+p8 <- ggplot(df_long, aes(x = method, y = jaccard, fill = method)) +
+  geom_violin(outlier.shape = NA, width = 0.8) +
+  geom_jitter(width = 0.2, alpha = 0.1, size = 0.5, color='black') +
+  theme_minimal() +
+  labs(
+    x = "",
+    y = "",
+    title = "H\nestimated by\nvarying seed"
+  ) +
+  scale_fill_manual(values = c(
+    "jaccard_as" = color_alpha_as,
+    "jaccard_mgh" = color_alpha_mgh
+  )) +
+  scale_color_manual(values = c(
+    "jaccard_as" = color_alpha_as,
+    "jaccard_mgh" = color_alpha_mgh
+  )) +
+  scale_x_discrete(labels = c(
+    jaccard_as = "a-AS\n(a = 0.5)",
+    jaccard_mgh = "a-MGH\n(a = 0.4)"
+  )) +
+  theme(
+    plot.title = element_text(size = 10, hjust = 0.5),
+    axis.title = element_text(size = 10),
+    axis.text.x = element_text(size = 10, angle = angle, hjust = 0.5),
+    axis.text.y = element_text(size = 10),
+    legend.position = "none"
+  )
+
+
+
+
+cairo_pdf(file="plots/as_vs_mgh.pdf", width=7, height=5)
+# Print the plots
+(p1 | p3 | p2 | p4) /
+(p5 | p7 | p6 | p8 )
+dev.off()
