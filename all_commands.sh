@@ -203,3 +203,11 @@ expt_growth --t 0.5 --metric containment --seeds 500 --steps 8 --growth x2 --out
 expt_growth --t 0.5 --metric containment --seeds 500 --steps 8 --growth x2 --out results/fixed_containment_expt_fmh_t0.5_s0.001 --algo fracminhash --scale 0.001 --base_n 50000 --size_multiplier 40
 
 python scripts/plot_fixed_t_results.py --t 0.5 --alpha 0.45 --k_mgh 90 --scale 0.001 --k_mh 1000 --metric containment
+
+
+
+# pairwise matrices experiments and plots
+cd MaxGeomHash-Genome-Research-2026-pairwise-comparisons
+bash scripts/run_sketch_and_pairwise_plus_plot.sh
+
+# then stitch plots together and label using Illustrator
